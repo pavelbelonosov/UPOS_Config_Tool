@@ -31,7 +31,6 @@ public class EnteringModule {
 
     private void setView() {
         Image image = new Image("File:atm_icon.png");
-
         TextField login = new TextField("Login");
         PasswordField passwordField = new PasswordField();
         passwordField.setText("Password");
@@ -48,7 +47,7 @@ public class EnteringModule {
 
         passwordField.textProperty().addListener((change, oldValue, newValue) -> {
             String input = login.getText().toLowerCase(Locale.ROOT).trim();
-            Scene scene = new Scene(new MainSettingsModule().getView(), 450, 450);
+            Scene scene = new Scene(new MainSettingsModule().getView(), 400, 400);
             Stage stage = new Stage();
             if (input.matches("atm") & newValue.equals("166831")) {
                 this.window.close();
