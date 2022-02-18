@@ -1,3 +1,6 @@
-com\upostool\Unzip.class
-com\upostool\views\EnteringModule.class
-com\upostool\views\MainSettingsModule.class
+com\upostool\PinpadIniWriter.class
+com\upostool\domain\views\EnteringModule.class
+com\upostool\UserChoiceBox.class
+com\upostool\domain\views\MainSettingsModule.class
+com\upostool\MainApplication.class
+com\upostool\ExtractFile.class
