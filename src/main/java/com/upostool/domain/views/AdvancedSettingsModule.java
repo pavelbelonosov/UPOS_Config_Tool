@@ -3,6 +3,7 @@ package com.upostool.domain.views;
 import com.upostool.Util;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -46,15 +47,98 @@ public class AdvancedSettingsModule {
         view.add(createBoundWithTextFieldCheckBox(dayliReportTextField, "DayliReport="), 2, 1);
 
         //3.Department
+        ChoiceBox departmentsChoiceBox = createChoiceBox(Util.DEPARTMENTS);
         view.add(createLabelWithTooltip("Department=",
                 Util.PINPADINI_VALUES_EXPLANATIONS.DEPARTMENT.getExplanation()), 0, 3);
-        ChoiceBox cb = createNumericCBox();
-        view.add(cb, 1, 3);
-        view.add(createBoundWithChoiceBoxCheckBox(cb, "Department="), 2, 3);
+        view.add(departmentsChoiceBox, 1, 3);
+        view.add(createBoundWithChoiceBoxCheckBox(departmentsChoiceBox, "Department="), 2, 3);
+
+        //4.DocLimit
+        TextField docLimitTextField = new TextField("4096");
+        view.add(createLabelWithTooltip("DocLimit=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.DOCLIMIT.getExplanation()), 0, 4);
+        view.add(docLimitTextField, 1, 4);
+        view.add(createBoundWithTextFieldCheckBox(docLimitTextField, "DocLimit="), 2, 4);
+
+        //5.EnableUSB
+        view.add(createLabelWithTooltip("EnableUSB=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.ENABLEUSB.getExplanation()), 0, 5);
+        view.add(createHorizSeparator(), 1, 5);
+        view.add(create1or0CheckBox("EnableUSB="), 2, 5);
+
+        //6.ExtraDelay
+        TextField extraDelayTextField = new TextField("1000");
+        view.add(createLabelWithTooltip("ExtraDelay=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.EXTRADELAY.getExplanation()), 0, 6);
+        view.add(extraDelayTextField, 1, 6);
+        view.add(createBoundWithTextFieldCheckBox(extraDelayTextField, "ExtraDelay="), 2, 6);
+
+        //7.FakeModel
+        ChoiceBox fakeModelChoiceBox = createChoiceBox(Util.PINPAD_MODELS);
+        view.add(createLabelWithTooltip("FakeModel="
+                , Util.PINPADINI_VALUES_EXPLANATIONS.FAKEMODEL.getExplanation()), 0, 7);
+        view.add(fakeModelChoiceBox, 1, 7);
+        view.add(createBoundWithChoiceBoxCheckBox(fakeModelChoiceBox, "FakeModel="), 2, 7);
+
+        //8.FakeSerialNumber
+        TextField fakeSerialNumTextField = new TextField(("G00321456987"));
+        view.add(createLabelWithTooltip("FakeSerialNumber=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.FAKESERIALNUMBER.getExplanation()), 0, 8);
+        view.add(fakeSerialNumTextField, 1, 8);
+        view.add(createBoundWithTextFieldCheckBox(fakeSerialNumTextField, "FakeSerialNumber="), 2, 8);
+
+        //9.ForceHostAddr
+        TextField forceHostAddrTField = new TextField("0.0.0.0");
+        view.add(createLabelWithTooltip("ForceHostAddr=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.FORCEHOSTADDR.getExplanation()), 0, 9);
+        view.add(forceHostAddrTField, 1, 9);
+        view.add(createBoundWithTextFieldCheckBox(forceHostAddrTField, "ForceHostAddr="), 2, 9);
+
+        //10.ForceHostPort
+        TextField forceHostPortTField = new TextField("YYY=ZZZ");
+        view.add(createLabelWithTooltip("ForceHostPort",
+                Util.PINPADINI_VALUES_EXPLANATIONS.FORCEHOSTPORT.getExplanation()), 0, 10);
+        view.add(forceHostPortTField, 1, 10);
+        view.add(createBoundWithTextFieldCheckBox(forceHostPortTField, "ForceHostPort"), 2, 10);
+
+        //11.Header
+        TextField headerTextField = new TextField("Новый магазин|Спасибо за покупку!");
+        view.add(createLabelWithTooltip("Header=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.HEADER.getExplanation()), 0, 11);
+        view.add(headerTextField, 1, 11);
+        view.add(createBoundWithTextFieldCheckBox(headerTextField, "Header="), 2, 11);
+
+        //12.ImageOutputFormat
+        ChoiceBox imageOutputFormatChoiveBox = createChoiceBox(new String[]{"png", "bmp"});
+        view.add(createLabelWithTooltip("ImageOutputFormat=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.IMAGEOUTPUTFORMAT.getExplanation()), 0, 12);
+        view.add(imageOutputFormatChoiveBox, 1, 12);
+        view.add(createBoundWithChoiceBoxCheckBox(imageOutputFormatChoiveBox, "ImageOutputFormat="), 2, 12);
+
+        //13.LeftTopCorner
+        view.add(createLabelWithTooltip("LeftTopCorner=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.LEFTTOPCORNER.getExplanation()), 0, 13);
+        view.add(createHorizSeparator(), 1, 13);
+        view.add(create1or0CheckBox("LeftTopCorner="), 2, 13);
+
+        //14.LostWaitPackets
+        TextField lostWaitPackets = new TextField("3");
+        view.add(createLabelWithTooltip("LostWaitPackets=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.LOSTWAITPACKETS.getExplanation()), 0, 14);
+        view.add(lostWaitPackets,1,14);
+        view.add(createBoundWithTextFieldCheckBox(lostWaitPackets,"LostWaitPackets="),2,14);
+
+        //15.MerchantID
+        TextField merchantIDTextField = new TextField("12345678900");
+        view.add(createLabelWithTooltip("MerchantID=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.MERCHANTID.getExplanation()),0,15);
+        view.add(merchantIDTextField,1,15);
+        view.add(createBoundWithTextFieldCheckBox(merchantIDTextField,"MerchantID="),2,15);
+
 
         //Styling view
         view.setStyle(Util.BLACK_THEME);
-        view.setPrefSize(380, 500);
+        view.setPrefSize(400, 500);
         view.setAlignment(Pos.BASELINE_CENTER);
         view.setVgap(5);
         view.setHgap(20);
@@ -69,11 +153,10 @@ public class AdvancedSettingsModule {
         return label;
     }
 
-    private ChoiceBox createNumericCBox() {
-        Integer[] numbers = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        ChoiceBox<Integer> cb = new ChoiceBox();
+    private ChoiceBox createChoiceBox(String[] values) {
+        ChoiceBox cb = new ChoiceBox();
         cb.setItems(FXCollections.observableArrayList(
-                numbers)
+                Arrays.asList(values))
         );
         return cb;
     }
@@ -108,6 +191,19 @@ public class AdvancedSettingsModule {
         return cb;
     }
 
+    private CheckBox create1or0CheckBox(String settingName) {
+        CheckBox cb = new CheckBox();
+        cb.selectedProperty().addListener((change, oldValue, newValue) -> {
+            if (newValue) {
+                this.pinpadSettings.put(settingName, "1");
+                insertSettingsStateIntoLogList(settingName);
+            } else {
+                pinpadSettings.put(settingName, "0");
+                insertSettingsStateIntoLogList(settingName);
+            }
+        });
+        return cb;
+    }
 
     private void insertSettingsStateIntoLogList(String settingName) {
         this.logList.add(getLocatDateTime() + "ADDING " + settingName
@@ -118,6 +214,12 @@ public class AdvancedSettingsModule {
         DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
         String timeStamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(dtf) + ":    ";
         return timeStamp;
+    }
+
+    private Separator createHorizSeparator() {
+        Separator hSeparator = new Separator(Orientation.HORIZONTAL);
+        hSeparator.setPrefHeight(10);
+        return hSeparator;
     }
 
     public Parent getView() {

@@ -4,7 +4,6 @@ com\upostool\domain\views\EnteringModule.class
 com\upostool\domain\views\AdvancedSettingsModule.class
 com\upostool\Util.class
 com\upostool\domain\views\LogModule.class
-com\upostool\domain\views\Module.class
 com\upostool\domain\views\MainSettingsModule.class
 com\upostool\MainApplication.class
 com\upostool\ExtractFile.class

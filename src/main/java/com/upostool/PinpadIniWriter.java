@@ -15,7 +15,7 @@ public class PinpadIniWriter {
 
     public PinpadIniWriter(String dir) {
         this.file = dir + "pinpad.ini";
-        this.pinpadIniContent = new HashMap();
+        this.pinpadIniContent = new LinkedHashMap<>();
     }
 
     public PinpadIniWriter(String dir, Map settings) {
@@ -23,17 +23,13 @@ public class PinpadIniWriter {
         this.pinpadIniContent = settings;
     }
 
-    public boolean load() {
-        try {
-            Files.lines(Paths.get(file))
-                    .forEach(line -> {
-                        String[] parts = line.split("=");
-                        pinpadIniContent.put((parts[0] + "="), parts[1]);
-                    });
-        } catch (Exception ex) {
-            return false;
-        }
-        return true;
+    public Map getSettings() throws Exception {
+        Files.lines(Paths.get(file))
+                .forEach(line -> {
+                    String[] parts = line.split("=");
+                    pinpadIniContent.put((parts[0] + "="), parts[1]);
+                });
+        return this.pinpadIniContent;
     }
 
     public void save() throws FileNotFoundException {

@@ -58,12 +58,12 @@ public class EnteringModule {
     }
 
     static void openStage(String title, Parent pane) {
-        Scene scene = new Scene(pane);//485, 450
+        Scene scene = new Scene(pane);
         Stage newStage = new Stage();
         newStage.setTitle(title);
         newStage.getIcons().add(Util.ATM_ICON_MAIN);
-        newStage.setMaxHeight(550);
-        newStage.setMaxWidth(550);
+        newStage.setMaxHeight(450);
+        newStage.setMaxWidth(450);
         newStage.setScene(scene);
         newStage.show();
     }
