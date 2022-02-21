@@ -28,10 +28,6 @@ public class ExtractFile {
                 os.write(b, 0, length);
             }
         }
-
-       // is.close();
-       // os.close();
-
         unzipFile();
         deleteZip();
     }

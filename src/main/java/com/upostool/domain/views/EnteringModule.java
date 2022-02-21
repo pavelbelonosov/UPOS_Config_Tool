@@ -62,8 +62,8 @@ public class EnteringModule {
         Stage newStage = new Stage();
         newStage.setTitle(title);
         newStage.getIcons().add(Util.ATM_ICON_MAIN);
-        newStage.setMaxHeight(450);
-        newStage.setMaxWidth(450);
+        newStage.setMaxHeight(700);
+        newStage.setMaxWidth(500);
         newStage.setScene(scene);
         newStage.show();
     }

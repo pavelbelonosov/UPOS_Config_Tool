@@ -24,8 +24,14 @@ public class Util {
             "1B55", "1B550D0A", "1B69", "1B690D0A", "0D0A080D0A", "1B6702"};
     public static final String[] COMPORTS = new String[]{"1", "2", "3", "4", "5",
             "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
-    public static final String[] DEPARTMENTS = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-    public static final String[] PINPAD_MODELS = new String[]{"VERIFONE VX 820 CTLS", "VX 805", "S 300", "PAX SP30ARM", "IPP 350", "TELIUM IPP 320 A"};
+    public static final String[] DEPARTMENTS = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9",
+            "10","11","12","13","14","15"};
+    public static final String[] PINPAD_MODELS = new String[]{"VERIFONE VX 820 CTLS", "VX 805", "S 300",
+            "PAX SP30ARM", "IPP 350", "TELIUM IPP 320 A"};
+    public static final String[] PINPAD_SPEED = new String[]{"300", "1200", "2400", "4800", "9600", "14400",
+            "19200", "38400", "57600", "115200"};
+    public static final String[] PRINTER_TYPE = new String[]{"Shtrih-PTRK1","Epson-TM950","Generic_32_chars",
+    "Generic_35_chars","Generic_36_chars","Generic_40_chars","Generic_50_chars"};
 
     public enum PINPADINI_VALUES_EXPLANATIONS {
         SHOWSCREENS("Выключить/Включить дублирование интерфейса на экран кассира"),
@@ -62,7 +68,40 @@ public class Util {
         LEFTTOPCORNER("Выводить окно в левом-верхнем углу"),
         LOSTWAITPACKETS("Значения, меньшие чем 3, игнорируются и параметр считается равным 3.\n"
         +"Функциональность MSB WAIT"),
-        MERCHANTID("Установка номера терминала в пинпаде с помощью файла pinpad.ini.");
+        MERCHANTID("Установка номера терминала в пинпаде с помощью файла pinpad.ini."),
+        ONLYDOS("Принудительное использование DOS приложения для выполнения команд.\n"
+                +"Используется при ошибках определения типа ОС.Только интерфейс sb_pilot.exe."),
+        OPTIMALSPEED("Рекомендуемая скорость обмена ККМ с пинпадом.\n"
+                             +"Используется для установки параметра Speed."),
+        PILOTNTSEPARATECANCELANDREFUND("При использовании параметра PilotNtSeparateCancelAndRefund=1\n"
+                + "команда 8 будет выполняться как «чистая» ОТМЕНА, а команда 3 — как ВОЗВРАТ,\n"
+                +" который может быть преобразован в ОТМЕНУ.\n"
+                +"При использовании параметра PilotNtSeparateCancelAndRefund=0,\n"
+                +" либо его отсутствии библиотека pilot_nt.dll при вызове команд 3 и 8\n"
+                +"и всегда вызывает операцию ВОЗВРАТ (4002) библиотеки sb_kernel.dll.\n"),
+        PINPADIPPORT("Порт пинпада, управляемого по протоколу ТТК"),
+        PINPADLOG("ыключить/Включить логирование обмена данными с пинпадом в файл CommLogX.txt"),
+        PRINTERBOLD("Команда печати строки жирным шрифтом. Разрешенная принтером строка символов."),
+        PRINTERFILE("Имя файла для образа слипа."),
+        PRINTERHIGH("Команда печати строки высоким шрифтом. Разрешенная принтером строка символов."),
+        PRINTERINIT("Последовательность символов в начале слипа.Разрешенная принтером строка символов."),
+        PRINTERINVERSE("Команда печати строки инверсным шрифтом.Разрешенная принтером строка символов."),
+        PRINTERTYPE("Имя принтера , соответствующее имени секци в файла printers.ini."),
+        PRINTERWIDE("Команда печати строки широким шрифтом.Разрешенная принтером строка символов."),
+        SCHEDULEDCOMMAND("Номер функции для отложенного выполнения."),
+        SCHEDULEDTIME("Время отложенного вызова ScheduledCommand=Х."),
+        TERMINALID("Установка номера терминала в пинпаде с помощью файла pinpad.ini."),
+        VIVOLOG("Вести протокол обмена с VivoPay"),
+        WORKINGDIR("Каталог хранения служебных файлов.\n"
+        +"Путь к папке в формате со слешем в конце"),
+        FORCETOPMOST("Если ForceTopMost=1, то окна UPOS получают признак TOPMOST\n"
+                +" и при клике мимо окна оно теряет фокус ввода, но не уходит на задний план.\n"
+                +" Пример - окно диспечера задач Windows."),
+        WAITPINPADSECONDS("По истечении WaitPinpadSeconds кассовое ПО завершит работу с ошибкой 2004.\n"
+                + "От 3 до 140"),
+        COMMTIMEOUTS("Настройка таймаутов порта в виде:\n" +
+                "ReadIntervalTimeout-ReadTotalTimeoutMultiplier-ReadTotalTimeoutConstant");
+
 
         private String explanation;
 

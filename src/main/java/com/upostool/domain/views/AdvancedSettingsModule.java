@@ -125,23 +125,160 @@ public class AdvancedSettingsModule {
         TextField lostWaitPackets = new TextField("3");
         view.add(createLabelWithTooltip("LostWaitPackets=",
                 Util.PINPADINI_VALUES_EXPLANATIONS.LOSTWAITPACKETS.getExplanation()), 0, 14);
-        view.add(lostWaitPackets,1,14);
-        view.add(createBoundWithTextFieldCheckBox(lostWaitPackets,"LostWaitPackets="),2,14);
+        view.add(lostWaitPackets, 1, 14);
+        view.add(createBoundWithTextFieldCheckBox(lostWaitPackets, "LostWaitPackets="), 2, 14);
 
         //15.MerchantID
         TextField merchantIDTextField = new TextField("12345678900");
         view.add(createLabelWithTooltip("MerchantID=",
-                Util.PINPADINI_VALUES_EXPLANATIONS.MERCHANTID.getExplanation()),0,15);
-        view.add(merchantIDTextField,1,15);
-        view.add(createBoundWithTextFieldCheckBox(merchantIDTextField,"MerchantID="),2,15);
+                Util.PINPADINI_VALUES_EXPLANATIONS.MERCHANTID.getExplanation()), 0, 15);
+        view.add(merchantIDTextField, 1, 15);
+        view.add(createBoundWithTextFieldCheckBox(merchantIDTextField, "MerchantID="), 2, 15);
 
+        //16.OnlyDos
+        view.add(createLabelWithTooltip("OnlyDos=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.ONLYDOS.getExplanation()), 0, 16);
+        view.add(createHorizSeparator(), 1, 16);
+        view.add(create1or0CheckBox("OnlyDos="), 2, 16);
+
+        //17.OptimalSpeed
+        ChoiceBox optimalSpeedChoiceBox = createChoiceBox(Util.PINPAD_SPEED);
+        view.add(createLabelWithTooltip("OptimalSpeed=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.OPTIMALSPEED.getExplanation()), 4, 0);
+        view.add(optimalSpeedChoiceBox, 5, 0);
+        view.add(createBoundWithChoiceBoxCheckBox(optimalSpeedChoiceBox, "OptimalSpeed="), 6, 0);
+
+        //18.PilotNtSeparateCancelAndRefund
+        view.add(createLabelWithTooltip("PilotNtSeparateCancelAndRefund=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PILOTNTSEPARATECANCELANDREFUND.getExplanation()), 4, 1);
+        view.add(createHorizSeparator(), 5, 1);
+        view.add(create1or0CheckBox("PilotNtSeparateCancelAndRefund="), 6, 1);
+
+        //19.PinpadIPPort
+        TextField pinpadIPportTextField = new TextField("8888");
+        view.add(createLabelWithTooltip("PinpadIPPort=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PINPADIPPORT.getExplanation()), 4, 2);
+        view.add(pinpadIPportTextField, 5, 2);
+        view.add(createBoundWithTextFieldCheckBox(pinpadIPportTextField, "PinpadIPPort="), 6, 2);
+
+        //20.PinpadLog
+        view.add(createLabelWithTooltip("PinpadLog=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PINPADLOG.getExplanation()), 4, 3);
+        view.add(createHorizSeparator(), 5, 3);
+        view.add(create1or0CheckBox("PinpadLog="), 6, 3);
+
+        //21.PrinterBold
+        TextField printerBoldTextField = new TextField("010D0A");
+        view.add(createLabelWithTooltip("printerBoldTextField=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PRINTERBOLD.getExplanation()), 4, 4);
+        view.add(printerBoldTextField, 5, 4);
+        view.add(createBoundWithTextFieldCheckBox(printerBoldTextField, "printerBoldTextField="), 6, 4);
+
+        //22.PrinterFile
+        TextField printerFileTextField = new TextField("p");
+        view.add(createLabelWithTooltip("PrinterFile=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PRINTERFILE.getExplanation()), 4, 5);
+        view.add(printerFileTextField, 5, 5);
+        view.add(createBoundWithTextFieldCheckBox(printerFileTextField, "PrinterFile="), 6, 5);
+
+        //23.PrinterHigh
+        TextField printerHighTextField = new TextField("1D43");
+        view.add(createLabelWithTooltip("PrinterHigh",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PRINTERHIGH.getExplanation()), 4, 6);
+        view.add(printerHighTextField, 5, 6);
+        view.add(createBoundWithTextFieldCheckBox(printerHighTextField, "PrinterHigh="), 6, 6);
+
+        //24.PrinterInit
+        TextField printerInitTextField = new TextField("1B6701");
+        view.add(createLabelWithTooltip("PrinterInit=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PRINTERINIT.getExplanation()), 4, 7);
+        view.add(printerInitTextField, 5, 7);
+        view.add(createBoundWithTextFieldCheckBox(printerInitTextField, "PrinterInit="), 6, 7);
+
+        //25.PrinterInverse
+        TextField printerInverseTextField = new TextField("1D42");
+        view.add(createLabelWithTooltip("PrinterInverse=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PRINTERINVERSE.getExplanation()), 4, 8);
+        view.add(printerInverseTextField, 5, 8);
+        view.add(createBoundWithTextFieldCheckBox(printerInverseTextField, "PrinterInverse="), 6, 8);
+
+        //26.PrinterType
+        ChoiceBox printerTypeCBox = createChoiceBox(Util.PRINTER_TYPE);
+        view.add(createLabelWithTooltip("PrinterType=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PRINTERTYPE.getExplanation()), 4, 9);
+        view.add(printerTypeCBox, 5, 9);
+        view.add(createBoundWithChoiceBoxCheckBox(printerTypeCBox, "PrinterType="), 6, 9);
+
+        //27.PrinterWide
+        TextField printerWideTextField = new TextField("1B2121");
+        view.add(createLabelWithTooltip("PrinterWide=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.PRINTERWIDE.getExplanation()), 4, 10);
+        view.add(printerWideTextField, 5, 10);
+        view.add(createBoundWithTextFieldCheckBox(printerWideTextField, "PrinterWide="), 6, 10);
+
+        //28.ScheduledCommand
+        TextField shedCommandTextField = new TextField("7");
+        view.add(createLabelWithTooltip("ScheduledCommand=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.SCHEDULEDCOMMAND.getExplanation()), 4, 11);
+        view.add(shedCommandTextField, 5, 11);
+        view.add(createBoundWithTextFieldCheckBox(shedCommandTextField, "ScheduledCommand="), 6, 11);
+
+        //29.ScheduledTime
+        TextField shedTimeTextField = new TextField("23:50:30");
+        view.add(createLabelWithTooltip("ScheduledTime=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.SCHEDULEDTIME.getExplanation()), 4, 12);
+        view.add(shedTimeTextField, 5, 12);
+        view.add(createBoundWithTextFieldCheckBox(shedTimeTextField, "ScheduledTime="), 6, 12);
+
+        //30.TerminalID
+        TextField terminalIdTextField = new TextField("12345678");
+        view.add(createLabelWithTooltip("TerminalID=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.TERMINALID.getExplanation()), 4, 13);
+        view.add(terminalIdTextField, 5, 13);
+        view.add(createBoundWithTextFieldCheckBox(terminalIdTextField, "TerminalID="), 6, 13);
+
+        //31.VivoLog
+        view.add(createLabelWithTooltip("VivoLog=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.VIVOLOG.getExplanation()), 4, 14);
+        view.add(createHorizSeparator(), 5, 14);
+        view.add(create1or0CheckBox("VivoLog="), 6, 14);
+
+        //32.WorkingDir
+        TextField workDirTextField = new TextField("С:/sc552/data/");
+        view.add(createLabelWithTooltip("WorkingDir=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.WORKINGDIR.getExplanation()), 4, 15);
+        view.add(workDirTextField, 5, 15);
+        view.add(createBoundWithTextFieldCheckBox(workDirTextField, "WorkingDir="), 6, 15);
+
+        //33.ForceTopMost
+        view.add(createLabelWithTooltip("ForceTopMost=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.FORCETOPMOST.getExplanation()), 4, 16);
+        view.add(createHorizSeparator(), 5, 16);
+        view.add(create1or0CheckBox("ForceTopMost="), 6, 16);
+
+        //34.WaitPinpadSeconds
+        TextField waitPinpadSecTextField = new TextField("3");
+        view.add(createLabelWithTooltip("WaitPinpadSeconds=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.WAITPINPADSECONDS.getExplanation()), 4, 17);
+        view.add(waitPinpadSecTextField,5,17);
+        view.add(createBoundWithTextFieldCheckBox(waitPinpadSecTextField,"WaitPinpadSeconds="),6,17);
+
+        //35.CommTimeouts
+        TextField commTimeoutsTextField = new TextField("4294967295-0-0");
+        view.add(createLabelWithTooltip("commTimeoutsTextField=",
+                Util.PINPADINI_VALUES_EXPLANATIONS.COMMTIMEOUTS.getExplanation()),0,17);
+        view.add(commTimeoutsTextField,1,17);
+        view.add(createBoundWithTextFieldCheckBox(commTimeoutsTextField,"commTimeoutsTextField"),2,17);
 
         //Styling view
+        for (int i = 0; i < view.getRowCount(); i++) {
+            view.add(createVerticalSeparator(), 3, i);
+        }
         view.setStyle(Util.BLACK_THEME);
-        view.setPrefSize(400, 500);
-        view.setAlignment(Pos.BASELINE_CENTER);
+        view.setPrefSize(650, 500);
+        view.setAlignment(Pos.TOP_LEFT);
         view.setVgap(5);
-        view.setHgap(20);
+        view.setHgap(10);
         view.setPadding(new Insets(10, 10, 10, 10));
     }
 
@@ -220,6 +357,12 @@ public class AdvancedSettingsModule {
         Separator hSeparator = new Separator(Orientation.HORIZONTAL);
         hSeparator.setPrefHeight(10);
         return hSeparator;
+    }
+
+    private Separator createVerticalSeparator() {
+        Separator vSeparator = new Separator(Orientation.VERTICAL);
+        vSeparator.setPrefHeight(10);
+        return vSeparator;
     }
 
     public Parent getView() {

@@ -118,13 +118,16 @@ public class MainSettingsModule {
         //9.Adding "Reset" button
         view.add(createResetButton(), 1, 4);
 
-        //Adding "Advanced settings" button
+        //10.Adding "Advanced settings" button
         view.add(createAdvancedSettingsButton(), 0, 9);
 
-        //Adding "Load into cache" button
+        //11.Adding "Load into cache" button
         view.add(createLoadFromPinpadButton(toWhereUnzip), 0, 4);
 
-        //10.Styling layout
+        //12.Adding "Test function" button
+        view.add(createTestFunctionsButton(toWhereUnzip),2,9);
+
+        //13.Styling layout
         view.setStyle(Util.BLACK_THEME);
         view.setPrefSize(400, 350);
         view.add(new ImageView(Util.LOGO_TRANSPARENT), 1, 10);
@@ -309,6 +312,14 @@ public class MainSettingsModule {
         return btn;
     }
 
+    private Button createTestFunctionsButton(TextField toWhereUnzip) {
+        Button btn = new Button("FUNCTIONS");
+        btn.setOnAction(e -> {
+            EnteringModule.openStage("UPOS TEST", new TestFunctionsModule(this.logList, toWhereUnzip.getText()).getView());
+        });
+        return btn;
+    }
+
     private Separator createHorizSeparator() {
         Separator hSeparator = new Separator(Orientation.HORIZONTAL);
         hSeparator.setPrefHeight(10);
@@ -326,7 +337,7 @@ public class MainSettingsModule {
                 + pinpadSettings.get(settingName) + " INTO CACHE...");
     }
 
-    public Parent getView() {
+    protected Parent getView() {
         return view;
     }
 }
