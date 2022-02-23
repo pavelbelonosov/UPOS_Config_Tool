@@ -7,3 +7,4 @@ com\upostool\domain\views\LogModule.class
 com\upostool\domain\views\MainSettingsModule.class
 com\upostool\MainApplication.class
 com\upostool\ExtractFile.class
+com\upostool\domain\views\TestFunctionsModule.class

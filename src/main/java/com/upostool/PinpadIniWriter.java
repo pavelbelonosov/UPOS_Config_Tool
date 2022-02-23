@@ -14,12 +14,12 @@ public class PinpadIniWriter {
     private final Map<String, String> pinpadIniContent;
 
     public PinpadIniWriter(String dir) {
-        this.file = dir + "pinpad.ini";
+        this.file = dir + "/pinpad.ini";
         this.pinpadIniContent = new LinkedHashMap<>();
     }
 
     public PinpadIniWriter(String dir, Map settings) {
-        this.file = dir + "pinpad.ini";
+        this.file = dir + "/pinpad.ini";
         this.pinpadIniContent = settings;
     }
 
