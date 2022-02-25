@@ -56,7 +56,6 @@ public class EnteringModule {
         });
 
     }
-
     static void openStage(String title, Parent pane) {
         Scene scene = new Scene(pane);
         Stage newStage = new Stage();

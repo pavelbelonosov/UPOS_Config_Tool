@@ -2,6 +2,9 @@
   "resources":{
   "includes":[
     {
+      "pattern":"\\Qcom/upostool/29.00.00.zip\\E"
+    }, 
+    {
       "pattern":"\\Qcom/upostool/30.01.05.zip\\E"
     }, 
     {
