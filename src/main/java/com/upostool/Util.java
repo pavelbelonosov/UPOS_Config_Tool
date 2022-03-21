@@ -15,7 +15,7 @@ public class Util {
             "    -fx-control-inner-background-alt: -fx-control-inner-background ";
 
     //Util data
-    public static final String[] UPOS_VERSIONS = new String[]{null, "32.02.05", "32.01.15",
+    public static final String[] UPOS_VERSIONS = new String[]{null, "32.04.04","32.02.05", "32.01.15", "31.11.02",
             "31.00.18", "30.26.04", "30.01.05","29.00.00"};
     public static final String[] DRIVERS_VERSIONS = new String[]{null, "Verifone_5.0.5.2_B3",
             "Pax_2.28", "Ingenico_3.26"};

@@ -1,15 +1,15 @@
 package com.upostool.domain.views;
 
-import com.upostool.MainApplication;
+
 import com.upostool.Util;
-import com.upostool.domain.views.MainSettingsModule;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -61,8 +61,9 @@ public class EnteringModule {
         Stage newStage = new Stage();
         newStage.setTitle(title);
         newStage.getIcons().add(Util.ATM_ICON_MAIN);
+        newStage.setMaxWidth(700);
         newStage.setMaxHeight(700);
-        newStage.setMaxWidth(500);
+
         newStage.setScene(scene);
         newStage.show();
     }

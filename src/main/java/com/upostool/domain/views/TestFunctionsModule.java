@@ -2,11 +2,9 @@ package com.upostool.domain.views;
 
 import com.upostool.Util;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -15,11 +13,15 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class TestFunctionsModule {
     private List<String> loglist;
@@ -27,14 +29,6 @@ public class TestFunctionsModule {
     private String uposDir;
     private String cheque;
     private final int COMPONENT_WIDTH = 100;
-
-    public TestFunctionsModule(){
-        this.loglist = new ArrayList<>();
-        this.view = new HBox();
-        this.uposDir = "C:/sc552/";
-        this.cheque = uposDir + "/p";
-        setView();
-    }
 
     public TestFunctionsModule(List log, String uposDir) {
         this.loglist = log;
@@ -46,26 +40,35 @@ public class TestFunctionsModule {
 
     private void setView() {
         //1.Creating components
-        //1.1 Cheque area for displaying file p
+        //1.0 Text area for displaying sbkernell.log
+        TextArea sbkernellArea = new TextArea();
+        sbkernellArea.textProperty().addListener((change,oldValue,newValue) -> {
+                sbkernellArea.setScrollTop(Double.MAX_VALUE);
+        });
+        sbkernellArea.setPrefSize(400, 100);
+        sbkernellArea.setStyle("-fx-aligment: center");
+
+        //1.1 Text area for displaying file p
         TextArea chequeArea = new TextArea();
-        chequeArea.setPrefSize(400, 270);
+        chequeArea.setPrefSize(400, 430);
         chequeArea.setStyle("-fx-aligment: center");
 
         //1.2 Operation buttons vbox
         VBox functionButtonBox = new VBox();
         functionButtonBox.setFillWidth(true);
-        TextField actCodeTextField = new TextField("Activation code");
-        actCodeTextField.setMaxWidth(COMPONENT_WIDTH);
+        TextField activationCodeTextField = new TextField("Activation code");
+        activationCodeTextField.setMaxWidth(COMPONENT_WIDTH);
         functionButtonBox.getChildren().addAll(
-                createRemoteLoadButton(actCodeTextField),
-                actCodeTextField,
-                createFunctionButton(chequeArea, "DEL KEY", "22", ""),
-                createFunctionButton(chequeArea, "X-REPORT", "9", "1"),
-                createFunctionButton(chequeArea, "PURCHASE", "1", "100"),
-                createFunctionButton(chequeArea, "REFUND", "3", "100"),
-                createFunctionButton(chequeArea, "CLOSE DAY", "7", ""),
-                createFunctionButton(chequeArea, "TEST PSDB", "47", "2"),
-                createFunctionButton(chequeArea, "HELP INFO", "36", "")
+                createFunctionButton(chequeArea, sbkernellArea, "MENU", "11", ""),
+                createRemoteLoadButton(activationCodeTextField,sbkernellArea),
+                activationCodeTextField,
+                createFunctionButton(chequeArea, sbkernellArea, "DEL KEY", "22", ""),
+                createFunctionButton(chequeArea, sbkernellArea, "X-REPORT", "9", "1"),
+                createFunctionButton(chequeArea, sbkernellArea, "PURCHASE", "1", "100"),
+                createFunctionButton(chequeArea, sbkernellArea, "REFUND", "3", "100"),
+                createFunctionButton(chequeArea, sbkernellArea, "CLOSE DAY", "7", ""),
+                createFunctionButton(chequeArea, sbkernellArea, "TEST PSDB", "47", "2"),
+                createFunctionButton(chequeArea, sbkernellArea, "HELP INFO", "36", "")
         );
 
         //1.3 Service buttons vbox
@@ -83,9 +86,18 @@ public class TestFunctionsModule {
                 createListenPortCheckButton(chequeArea)
         );
 
+        //1.4 Text area vbox
+        VBox textAreas = new VBox();
+        textAreas.setFillWidth(true);
+        textAreas.getChildren().addAll(
+                sbkernellArea,
+                createHorizSeparator(),
+                chequeArea
+        );
+
         //2.Creating view hbox layout
         view.getChildren().add(functionButtonBox);
-        view.getChildren().add(chequeArea);
+        view.getChildren().add(textAreas);
         view.getChildren().add(serviceButtonsBox);
 
         //3.Styling
@@ -97,7 +109,7 @@ public class TestFunctionsModule {
         view.setPadding(new Insets(10, 10, 10, 10));
     }
 
-    private Button createFunctionButton(TextArea chequeArea, String buttonName, String loadparmFirstParameter,
+    private Button createFunctionButton(TextArea chequeArea, TextArea sbkernellArea, String buttonName, String loadparmFirstParameter,
                                         String loadparmSecondParameter) {
         Button btn = new Button(buttonName);
         btn.setMinWidth(COMPONENT_WIDTH);
@@ -111,12 +123,13 @@ public class TestFunctionsModule {
                 loglist.add(getLocatDateTime() + ex.getMessage());
             }
             loadCheque(chequeArea);
+            loadSbkernellLog(sbkernellArea);
 
         });
         return btn;
     }
 
-    private Button createRemoteLoadButton(TextField activationCode) {
+    private Button createRemoteLoadButton(TextField activationCode, TextArea sbkernellArea) {
         Button btn = new Button("REMOTE LOAD");
         btn.setMinWidth(COMPONENT_WIDTH);
         btn.setOnAction(e -> {
@@ -128,6 +141,7 @@ public class TestFunctionsModule {
             } catch (Exception ex) {
                 loglist.add(getLocatDateTime() + ex.getMessage());
             }
+            loadSbkernellLog(sbkernellArea);
         });
         return btn;
     }
@@ -299,6 +313,30 @@ public class TestFunctionsModule {
         view.setDisable(false);
     }
 
+    private void loadSbkernellLog(TextArea sbkernellArea) {
+        String sbkernellLog = uposDir + "/sbkernel" +
+                getLocatDateTime().charAt(2) + getLocatDateTime().charAt(3) +
+                        getLocatDateTime().charAt(5) + getLocatDateTime().charAt(6) + ".log";
+        long startTime = System.currentTimeMillis();
+        long timeWait = startTime + 2000;
+        StringBuilder sbkernellContent = new StringBuilder();
+        view.setDisable(true);
+        while (timeWait >= System.currentTimeMillis()) {
+            try {
+                Files.lines(Paths.get(sbkernellLog))
+                        .forEach(line -> {
+                            sbkernellContent.append(line + "\n");
+                        });
+            } catch (IOException e) {
+                loglist.add(getLocatDateTime() + e.getMessage());
+            }
+            sbkernellArea.setText(sbkernellContent.toString());
+            sbkernellArea.appendText("");
+        }
+        view.setDisable(false);
+    }
+
+
     private void deleteCheque() throws IOException {
         if (Files.exists(Paths.get(cheque))) {
             Files.delete(Paths.get(cheque));
@@ -308,12 +346,18 @@ public class TestFunctionsModule {
         }
 
     }
-
+    private Separator createHorizSeparator() {
+        Separator hSeparator = new Separator(Orientation.HORIZONTAL);
+        hSeparator.setPrefHeight(10);
+        return hSeparator;
+    }
     private String getLocatDateTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
         String timeStamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(dtf) + ":  ";
         return timeStamp;
     }
+
+
 
     Parent getView() {
         return view;
