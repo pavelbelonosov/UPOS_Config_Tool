@@ -1,8 +1,8 @@
 com\upostool\Util$PINPADINI_VALUES_EXPLANATIONS.class
-com\upostool\domain\views\EnteringModule.class
-com\upostool\Util.class
 com\upostool\PinpadIniWriter.class
+com\upostool\domain\views\EnteringModule.class
 com\upostool\domain\views\AdvancedSettingsModule.class
+com\upostool\Util.class
 com\upostool\domain\views\LogModule.class
 com\upostool\domain\views\MainSettingsModule.class
 com\upostool\MainApplication.class

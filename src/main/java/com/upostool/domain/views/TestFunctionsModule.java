@@ -42,16 +42,18 @@ public class TestFunctionsModule {
         //1.Creating components
         //1.0 Text area for displaying sbkernell.log
         TextArea sbkernellArea = new TextArea();
-        sbkernellArea.textProperty().addListener((change,oldValue,newValue) -> {
-                sbkernellArea.setScrollTop(Double.MAX_VALUE);
+        sbkernellArea.textProperty().addListener((change, oldValue, newValue) -> {
+            sbkernellArea.setScrollTop(Double.MAX_VALUE);
         });
-        sbkernellArea.setPrefSize(400, 100);
-        sbkernellArea.setStyle("-fx-aligment: center");
+        sbkernellArea.setPrefSize(400, 70);
+        sbkernellArea.setStyle("-fx-aligment: center;\n" +
+                "-fx-font-size: 10;");
 
         //1.1 Text area for displaying file p
         TextArea chequeArea = new TextArea();
-        chequeArea.setPrefSize(400, 430);
-        chequeArea.setStyle("-fx-aligment: center");
+        chequeArea.setPrefSize(400, 460);
+        chequeArea.setStyle("-fx-aligment: center;\n" +
+                "-fx-font-size: 11;");
 
         //1.2 Operation buttons vbox
         VBox functionButtonBox = new VBox();
@@ -60,7 +62,7 @@ public class TestFunctionsModule {
         activationCodeTextField.setMaxWidth(COMPONENT_WIDTH);
         functionButtonBox.getChildren().addAll(
                 createFunctionButton(chequeArea, sbkernellArea, "MENU", "11", ""),
-                createRemoteLoadButton(activationCodeTextField,sbkernellArea),
+                createRemoteLoadButton(activationCodeTextField, sbkernellArea),
                 activationCodeTextField,
                 createFunctionButton(chequeArea, sbkernellArea, "DEL KEY", "22", ""),
                 createFunctionButton(chequeArea, sbkernellArea, "X-REPORT", "9", "1"),
@@ -74,6 +76,8 @@ public class TestFunctionsModule {
         //1.3 Service buttons vbox
         VBox serviceButtonsBox = new VBox();
         serviceButtonsBox.setFillWidth(true);
+        TextField pingIpArea = new TextField("192.168.1.50");
+        pingIpArea.setMaxWidth(COMPONENT_WIDTH);
         serviceButtonsBox.getChildren().addAll(
                 createActionDllButton("REG DLL", ""),
                 createActionDllButton("UNREG DLL", "/U"),
@@ -83,7 +87,9 @@ public class TestFunctionsModule {
                 createCmdCommandButton("SERVICES.MSC"),
                 createCmdCommandButton("DEVMGMT.MSC"),
                 createIpConfigButton(chequeArea),
-                createListenPortCheckButton(chequeArea)
+                createListenPortCheckButton(chequeArea),
+                createPingButton(pingIpArea,chequeArea),
+                pingIpArea
         );
 
         //1.4 Text area vbox
@@ -118,7 +124,7 @@ public class TestFunctionsModule {
                 deleteCheque();
                 loglist.add(getLocatDateTime() + "PROCESSING " + buttonName + "...");
                 function(loadparmFirstParameter, loadparmSecondParameter);
-                //loglist.add(getLocatDateTime() + "LOADPARM " + loadparmFirstParameter + " " + loadparmSecondParameter);
+                loglist.add(getLocatDateTime() + "LOADPARM/SB_PILOT " + loadparmFirstParameter + " " + loadparmSecondParameter);
             } catch (Exception ex) {
                 loglist.add(getLocatDateTime() + ex.getMessage());
             }
@@ -147,14 +153,19 @@ public class TestFunctionsModule {
     }
 
     private void function(String firstParameter, String secondParameter) throws IOException, InterruptedException {
-        Process process;
+        Process processLoadparm;
+        //Process processSb_pilot;
         if (secondParameter.equals("")) {
-            process = new ProcessBuilder(uposDir + "loadparm.exe", firstParameter).start();
-            process.waitFor();
+            processLoadparm = new ProcessBuilder(uposDir + "loadparm.exe", firstParameter).start();
+            //processSb_pilot = new ProcessBuilder(uposDir + "sb_pilot.exe", firstParameter).start();
+            processLoadparm.waitFor();
+            //processSb_pilot.waitFor();
             return;
         }
-        process = new ProcessBuilder(uposDir + "loadparm.exe", firstParameter, secondParameter).start();
-        process.waitFor();
+        processLoadparm = new ProcessBuilder(uposDir + "loadparm.exe", firstParameter, secondParameter).start();
+        //processSb_pilot = new ProcessBuilder(uposDir + "sb_pilot.exe", firstParameter, secondParameter).start();
+        processLoadparm.waitFor();
+        //processSb_pilot.waitFor();
     }
 
     private void remoteLoadFunction(String activationCode) throws IOException {
@@ -204,6 +215,29 @@ public class TestFunctionsModule {
         return b;
     }
 
+    private Button createPingButton(TextField ip, TextArea chequeArea) {
+        Button b = new Button("PING");
+        b.setMinWidth(COMPONENT_WIDTH);
+        b.setOnAction(e -> {
+            try {
+                loglist.add(getLocatDateTime() + "PING "+ip.getText()+"...");
+                Process p = new ProcessBuilder("cmd.exe", "/c", "ping",ip.getText()).start();
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(p.getInputStream(), "cp866"));
+                StringBuilder commandOutput = new StringBuilder();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    commandOutput.append(line);
+                    commandOutput.append(System.getProperty("line.separator"));
+                }
+                chequeArea.setText(commandOutput.toString());
+            } catch (IOException ex) {
+                loglist.add(getLocatDateTime() + ex.getMessage());
+            }
+        });
+        return b;
+    }
+
     private Button createListenPortCheckButton(TextArea chequeArea) {
         Button b = new Button("CHECK PORTS");
         b.setMinWidth(COMPONENT_WIDTH);
@@ -232,7 +266,7 @@ public class TestFunctionsModule {
                 builder.append(mainServer + " ON 690 NOT AVAILABLE\n");
             }
             if (isPortAvailable(agentServer, 80)) {
-                builder.append("AGENT\n"
+                builder.append("\nAGENT\n"
                         + agentServer + " ON 80 AVAILABLE");
             } else {
                 builder.append("AGENT\n"
@@ -299,7 +333,6 @@ public class TestFunctionsModule {
         long timeWait = startTime + 2000;
         view.setDisable(true);
         while (timeWait >= System.currentTimeMillis()) {
-
             if (Files.exists(Paths.get(cheque))) {
                 try (FileInputStream fin = new FileInputStream(cheque)) {
                     byte[] buffer = new byte[fin.available()];
@@ -316,26 +349,25 @@ public class TestFunctionsModule {
     private void loadSbkernellLog(TextArea sbkernellArea) {
         String sbkernellLog = uposDir + "/sbkernel" +
                 getLocatDateTime().charAt(2) + getLocatDateTime().charAt(3) +
-                        getLocatDateTime().charAt(5) + getLocatDateTime().charAt(6) + ".log";
-        long startTime = System.currentTimeMillis();
-        long timeWait = startTime + 2000;
+                getLocatDateTime().charAt(5) + getLocatDateTime().charAt(6) + ".log";
+        //long startTime = System.currentTimeMillis();
+        // long timeWait = startTime + 2000;
         StringBuilder sbkernellContent = new StringBuilder();
         view.setDisable(true);
-        while (timeWait >= System.currentTimeMillis()) {
-            try {
-                Files.lines(Paths.get(sbkernellLog))
-                        .forEach(line -> {
-                            sbkernellContent.append(line + "\n");
-                        });
-            } catch (IOException e) {
-                loglist.add(getLocatDateTime() + e.getMessage());
-            }
-            sbkernellArea.setText(sbkernellContent.toString());
-            sbkernellArea.appendText("");
+        //while (timeWait >= System.currentTimeMillis()) {
+        try {
+            Files.lines(Paths.get(sbkernellLog))
+                    .forEach(line -> {
+                        sbkernellContent.append(line + "\n");
+                    });
+        } catch (IOException e) {
+            loglist.add(getLocatDateTime() + e.getMessage());
         }
+        sbkernellArea.setText(sbkernellContent.toString());
+        sbkernellArea.appendText("");
+        //}
         view.setDisable(false);
     }
-
 
     private void deleteCheque() throws IOException {
         if (Files.exists(Paths.get(cheque))) {
@@ -346,18 +378,18 @@ public class TestFunctionsModule {
         }
 
     }
+
     private Separator createHorizSeparator() {
         Separator hSeparator = new Separator(Orientation.HORIZONTAL);
         hSeparator.setPrefHeight(10);
         return hSeparator;
     }
+
     private String getLocatDateTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
         String timeStamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(dtf) + ":  ";
         return timeStamp;
     }
-
-
 
     Parent getView() {
         return view;
