@@ -41,12 +41,12 @@ public class TestFunctionsModule {
     private void setView() {
         //1.Creating components
         //1.0 Text area for displaying sbkernell.log
-        TextArea sbkernellArea = new TextArea();
-        sbkernellArea.textProperty().addListener((change, oldValue, newValue) -> {
-            sbkernellArea.setScrollTop(Double.MAX_VALUE);
+        TextArea uposLogArea = new TextArea();
+        uposLogArea.textProperty().addListener((change, oldValue, newValue) -> {
+            uposLogArea.setScrollTop(Double.MAX_VALUE);
         });
-        sbkernellArea.setPrefSize(400, 70);
-        sbkernellArea.setStyle("-fx-aligment: center;\n" +
+        uposLogArea.setPrefSize(400, 70);
+        uposLogArea.setStyle("-fx-aligment: center;\n" +
                 "-fx-font-size: 10;");
 
         //1.1 Text area for displaying file p
@@ -61,16 +61,16 @@ public class TestFunctionsModule {
         TextField activationCodeTextField = new TextField("Activation code");
         activationCodeTextField.setMaxWidth(COMPONENT_WIDTH);
         functionButtonBox.getChildren().addAll(
-                createFunctionButton(chequeArea, sbkernellArea, "MENU", "11", ""),
-                createRemoteLoadButton(activationCodeTextField, sbkernellArea),
+                createFunctionButton(chequeArea, uposLogArea, "MENU", "11", ""),
+                createRemoteLoadButton(activationCodeTextField, uposLogArea),
                 activationCodeTextField,
-                createFunctionButton(chequeArea, sbkernellArea, "DEL KEY", "22", ""),
-                createFunctionButton(chequeArea, sbkernellArea, "X-REPORT", "9", "1"),
-                createFunctionButton(chequeArea, sbkernellArea, "PURCHASE", "1", "100"),
-                createFunctionButton(chequeArea, sbkernellArea, "REFUND", "3", "100"),
-                createFunctionButton(chequeArea, sbkernellArea, "CLOSE DAY", "7", ""),
-                createFunctionButton(chequeArea, sbkernellArea, "TEST PSDB", "47", "2"),
-                createFunctionButton(chequeArea, sbkernellArea, "HELP INFO", "36", "")
+                createFunctionButton(chequeArea, uposLogArea, "DEL KEY", "22", ""),
+                createFunctionButton(chequeArea, uposLogArea, "X-REPORT", "9", "1"),
+                createFunctionButton(chequeArea, uposLogArea, "PURCHASE", "1", "100"),
+                createFunctionButton(chequeArea, uposLogArea, "REFUND", "3", "100"),
+                createFunctionButton(chequeArea, uposLogArea, "CLOSE DAY", "7", ""),
+                createFunctionButton(chequeArea, uposLogArea, "TEST PSDB", "47", "2"),
+                createFunctionButton(chequeArea, uposLogArea, "HELP INFO", "36", "")
         );
 
         //1.3 Service buttons vbox
@@ -86,7 +86,7 @@ public class TestFunctionsModule {
                 createActionAgentButton("RUN AGENT", "/run"),
                 createCmdCommandButton("SERVICES.MSC"),
                 createCmdCommandButton("DEVMGMT.MSC"),
-                createCmdWithStdoutButton("IPCONFIG","ipconfig",chequeArea,pingIpArea),
+                createCmdWithStdoutButton("IPCONFIG", "ipconfig", chequeArea, pingIpArea),
                 createListenPortCheckButton(chequeArea),
                 createCmdWithStdoutButton("PING", "ping", chequeArea, pingIpArea),
                 pingIpArea
@@ -96,7 +96,7 @@ public class TestFunctionsModule {
         VBox textAreas = new VBox();
         textAreas.setFillWidth(true);
         textAreas.getChildren().addAll(
-                sbkernellArea,
+                uposLogArea,
                 createHorizSeparator(),
                 chequeArea
         );
@@ -135,7 +135,8 @@ public class TestFunctionsModule {
                 loglist.add(getLocatDateTime() + ex.getMessage());
             }
             loadCheque(chequeArea);
-            loadSbkernellLog(sbkernellArea);
+            loadUPOSLog("sbkernel", sbkernellArea);
+            loadUPOSLog("upos", sbkernellArea);
         });
         return btn;
     }
@@ -152,7 +153,8 @@ public class TestFunctionsModule {
             } catch (Exception ex) {
                 loglist.add(getLocatDateTime() + ex.getMessage());
             }
-            loadSbkernellLog(sbkernellArea);
+            loadUPOSLog("sbkernel", sbkernellArea);
+            loadUPOSLog("upos", sbkernellArea);
         });
         return btn;
     }
@@ -333,26 +335,22 @@ public class TestFunctionsModule {
         view.setDisable(false);
     }
 
-    private void loadSbkernellLog(TextArea sbkernellArea) {
-        String sbkernellLog = uposDir + "/sbkernel" +
+    private void loadUPOSLog(String log, TextArea uposLogArea) {
+        String sbkernellLog = uposDir + "/" + log +
                 getLocatDateTime().charAt(2) + getLocatDateTime().charAt(3) +
                 getLocatDateTime().charAt(5) + getLocatDateTime().charAt(6) + ".log";
-        //long startTime = System.currentTimeMillis();
-        // long timeWait = startTime + 2000;
-        StringBuilder sbkernellContent = new StringBuilder();
         view.setDisable(true);
-        //while (timeWait >= System.currentTimeMillis()) {
         try {
+            StringBuilder logContent = new StringBuilder();
             Files.lines(Paths.get(sbkernellLog))
                     .forEach(line -> {
-                        sbkernellContent.append(line + "\n");
+                        logContent.append(line + "\n");
                     });
+            uposLogArea.setText(logContent.toString());
         } catch (IOException e) {
-            loglist.add(getLocatDateTime() + e.getMessage());
+            loglist.add(getLocatDateTime() + e.getMessage() + " NOT FOUND");
         }
-        sbkernellArea.setText(sbkernellContent.toString());
-        sbkernellArea.appendText("");
-        //}
+        uposLogArea.appendText("");
         view.setDisable(false);
     }
 

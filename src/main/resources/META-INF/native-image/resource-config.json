@@ -14,10 +14,16 @@
       "pattern":"\\Qcom/upostool/31.00.18.zip\\E"
     }, 
     {
+      "pattern":"\\Qcom/upostool/31.11.02.zip\\E"
+    }, 
+    {
       "pattern":"\\Qcom/upostool/32.01.15.zip\\E"
     }, 
     {
       "pattern":"\\Qcom/upostool/32.02.05.zip\\E"
+    }, 
+    {
+      "pattern":"\\Qcom/upostool/32.04.04.zip\\E"
     }, 
     {
       "pattern":"\\Qcom/upostool/Ingenico_3.26.zip\\E"
