@@ -1,6 +1,6 @@
 # UPOS Config Tool
 
-A powerful util application for Sberbank engineers with Java 17+, JavaFX 17+ and GraalVM 21.
+A powerful util-application for Sberbank engineers with Java 17+, JavaFX 17+ and GraalVM 21.
 
 ## Description
 
@@ -30,6 +30,6 @@ Run the native image app:
 ```bash
 mvn gluonfx:nativerun
 ```
-### Most recent version
+## Most recent version
 
 UPOS Config Tool v.0.2
