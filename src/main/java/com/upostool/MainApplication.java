@@ -15,7 +15,7 @@ public class MainApplication extends Application {
             Scene scene = new Scene(new EnteringModule(primaryStage).getView(), 300, 300);
             primaryStage.setScene(scene);
             primaryStage.getIcons().add(new Image(MainApplication.class.getResourceAsStream("atm_icon.png")));
-            primaryStage.setTitle("UPOS Config Tool v.0.1");
+            primaryStage.setTitle("UPOS Config Tool v.0.2");
             primaryStage.show();
         }
 

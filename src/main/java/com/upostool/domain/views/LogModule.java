@@ -4,19 +4,16 @@ import com.upostool.Util;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 import java.util.List;
 
 public class LogModule {
     private GridPane view;
     private List<String> log;
-
 
     public LogModule(List log) {
         this.view = new GridPane();
@@ -26,8 +23,8 @@ public class LogModule {
 
     private void setView() {
         //Creating and adding components
-        Label thisAppVersion = new Label("UPOS CONFIG TOOL v.0.1");
-        Label contact = new Label("CONTACT_VIA_EMAIL:  belonosov.kamensk@atm72.ru || https://atm72.ru/");
+        Label thisAppVersion = new Label("UPOS CONFIG TOOL v.0.2");
+        Label contact = new Label("CONTACT:  belonosov.kamensk@atm72.ru");
         view.add(thisAppVersion, 0, 0);
         view.add(contact, 0, 1);
         view.add(createLogTextArea(), 0, 3);
@@ -40,7 +37,6 @@ public class LogModule {
         view.setVgap(10);
         view.setHgap(0);
         view.setPadding(new Insets(20, 20, 20, 20));
-
     }
 
     private TextArea createLogTextArea() {
@@ -50,10 +46,9 @@ public class LogModule {
         StringBuilder str = new StringBuilder();
         this.log.stream().forEach(line -> str.append(line + "\n"));
         area.setText(str.toString());
+        area.end();
         return area;
     }
-
-
 
     public Parent getView() {
         return view;

@@ -86,9 +86,9 @@ public class TestFunctionsModule {
                 createActionAgentButton("RUN AGENT", "/run"),
                 createCmdCommandButton("SERVICES.MSC"),
                 createCmdCommandButton("DEVMGMT.MSC"),
-                createIpConfigButton(chequeArea),
+                createCmdWithStdoutButton("IPCONFIG","ipconfig",chequeArea,pingIpArea),
                 createListenPortCheckButton(chequeArea),
-                createPingButton(pingIpArea,chequeArea),
+                createCmdWithStdoutButton("PING", "ping", chequeArea, pingIpArea),
                 pingIpArea
         );
 
@@ -115,22 +115,27 @@ public class TestFunctionsModule {
         view.setPadding(new Insets(10, 10, 10, 10));
     }
 
-    private Button createFunctionButton(TextArea chequeArea, TextArea sbkernellArea, String buttonName, String loadparmFirstParameter,
-                                        String loadparmSecondParameter) {
+    private Button createFunctionButton(TextArea chequeArea, TextArea sbkernellArea, String buttonName,
+                                        String loadparmFirstParameter, String loadparmSecondParameter) {
         Button btn = new Button(buttonName);
         btn.setMinWidth(COMPONENT_WIDTH);
         btn.setOnAction(e -> {
             try {
                 deleteCheque();
                 loglist.add(getLocatDateTime() + "PROCESSING " + buttonName + "...");
-                function(loadparmFirstParameter, loadparmSecondParameter);
-                loglist.add(getLocatDateTime() + "LOADPARM/SB_PILOT " + loadparmFirstParameter + " " + loadparmSecondParameter);
+                function("loadparm.exe", loadparmFirstParameter, loadparmSecondParameter);
+                loglist.add(getLocatDateTime() + "LOADPARM " + loadparmFirstParameter + " " + loadparmSecondParameter);
+            } catch (Exception ex) {
+                loglist.add(getLocatDateTime() + ex.getMessage());
+            }
+            try {
+                loglist.add(getLocatDateTime() + "SB_PILOT " + loadparmFirstParameter + " " + loadparmSecondParameter);
+                function("sb_pilot.exe", loadparmFirstParameter, loadparmSecondParameter);
             } catch (Exception ex) {
                 loglist.add(getLocatDateTime() + ex.getMessage());
             }
             loadCheque(chequeArea);
             loadSbkernellLog(sbkernellArea);
-
         });
         return btn;
     }
@@ -143,7 +148,7 @@ public class TestFunctionsModule {
                 deleteCheque();
                 loglist.add(getLocatDateTime() + "PROCESSING REMOTE LOAD...");
                 remoteLoadFunction(activationCode.getText());
-                //loglist.add(getLocatDateTime() + "LOADPARM " + 21 + " " + activationCode.getText());
+                loglist.add(getLocatDateTime() + "LOADPARM " + 21 + " " + activationCode.getText());
             } catch (Exception ex) {
                 loglist.add(getLocatDateTime() + ex.getMessage());
             }
@@ -152,20 +157,15 @@ public class TestFunctionsModule {
         return btn;
     }
 
-    private void function(String firstParameter, String secondParameter) throws IOException, InterruptedException {
-        Process processLoadparm;
-        //Process processSb_pilot;
+    private void function(String module, String firstParameter, String secondParameter) throws IOException, InterruptedException {
+        Process process;
         if (secondParameter.equals("")) {
-            processLoadparm = new ProcessBuilder(uposDir + "loadparm.exe", firstParameter).start();
-            //processSb_pilot = new ProcessBuilder(uposDir + "sb_pilot.exe", firstParameter).start();
-            processLoadparm.waitFor();
-            //processSb_pilot.waitFor();
+            process = new ProcessBuilder(uposDir + module, firstParameter).start();
+            process.waitFor();
             return;
         }
-        processLoadparm = new ProcessBuilder(uposDir + "loadparm.exe", firstParameter, secondParameter).start();
-        //processSb_pilot = new ProcessBuilder(uposDir + "sb_pilot.exe", firstParameter, secondParameter).start();
-        processLoadparm.waitFor();
-        //processSb_pilot.waitFor();
+        process = new ProcessBuilder(uposDir + module, firstParameter, secondParameter).start();
+        process.waitFor();
     }
 
     private void remoteLoadFunction(String activationCode) throws IOException {
@@ -192,36 +192,23 @@ public class TestFunctionsModule {
         return b;
     }
 
-    private Button createIpConfigButton(TextArea chequeArea) {
-        Button b = new Button("IPCONFIG");
+    private Button createCmdWithStdoutButton(String name, String command, TextArea chequeArea, TextField ip) {
+        Button b = new Button(name);
         b.setMinWidth(COMPONENT_WIDTH);
         b.setOnAction(e -> {
             try {
-                loglist.add(getLocatDateTime() + "GETTING IPCONFIG...");
-                Process ipconfig = new ProcessBuilder("cmd.exe", "/c", "ipconfig").start();
-                BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(ipconfig.getInputStream(), "cp866"));
-                StringBuilder commandOutput = new StringBuilder();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    commandOutput.append(line);
-                    commandOutput.append(System.getProperty("line.separator"));
+                loglist.add(getLocatDateTime() + name + " " + ip.getText() + "...");
+                Process p;
+                switch (command) {
+                    case "ping":
+                        p = new ProcessBuilder("cmd.exe", "/c", command, ip.getText()).start();
+                        break;
+                    case "ipconfig":
+                        p = new ProcessBuilder("cmd.exe", "/c", command).start();
+                        break;
+                    default:
+                        p = new ProcessBuilder("cmd.exe", "/c").start();
                 }
-                chequeArea.setText(commandOutput.toString());
-            } catch (IOException ex) {
-                loglist.add(getLocatDateTime() + ex.getMessage());
-            }
-        });
-        return b;
-    }
-
-    private Button createPingButton(TextField ip, TextArea chequeArea) {
-        Button b = new Button("PING");
-        b.setMinWidth(COMPONENT_WIDTH);
-        b.setOnAction(e -> {
-            try {
-                loglist.add(getLocatDateTime() + "PING "+ip.getText()+"...");
-                Process p = new ProcessBuilder("cmd.exe", "/c", "ping",ip.getText()).start();
                 BufferedReader reader =
                         new BufferedReader(new InputStreamReader(p.getInputStream(), "cp866"));
                 StringBuilder commandOutput = new StringBuilder();
