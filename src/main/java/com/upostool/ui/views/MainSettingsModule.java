@@ -1,8 +1,6 @@
-package com.upostool.domain.views;
+package com.upostool.ui.views;
 
-import com.upostool.ExtractFile;
-import com.upostool.PinpadIniWriter;
-import com.upostool.Util;
+import com.upostool.util.*;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -34,13 +32,12 @@ public class MainSettingsModule {
 
     private void setView() {
 
-
         //1.Creating UPOS Version config components and layout
         Label version = new Label("UPOS_VERSION:");
         Label uposExtractError = new Label("STATUS");
         uposExtractError.setDisable(true);
         uposExtractError.setTextFill(Color.TRANSPARENT);
-        ChoiceBox uposItems = createBoundChoiceBox(Util.UPOS_VERSIONS);
+        ChoiceBox uposItems = createBoundChoiceBox(Constants.UPOS_VERSIONS);
         view.add(version, 0, 0);
         view.add(uposExtractError, 1, 0);
         view.add(uposItems, 2, 0);
@@ -50,7 +47,7 @@ public class MainSettingsModule {
         Label driverExtractError = new Label("STATUS");
         driverExtractError.setDisable(true);
         driverExtractError.setTextFill(Color.TRANSPARENT);
-        ChoiceBox driverItems = createBoundChoiceBox(Util.DRIVERS_VERSIONS);
+        ChoiceBox driverItems = createBoundChoiceBox(Constants.DRIVERS_VERSIONS);
 
         view.add(driverVersion, 0, 1);
         view.add(driverExtractError, 1, 1);
@@ -94,7 +91,7 @@ public class MainSettingsModule {
         //5.2 Creating GUI components
         Label guiLabel = new Label("GUI");
         Tooltip tooltip = new Tooltip();
-        tooltip.setText(Util.PINPADINI_VALUES_EXPLANATIONS.SHOWSCREENS.getExplanation());
+        tooltip.setText(SETTINGS_VALUES_EXPLANATIONS.SHOWSCREENS.getExplanation());
         guiLabel.setTooltip(tooltip);
         view.add(guiLabel, 0, 7);
         view.add(createGuiCheckBox(), 2, 7);
@@ -105,7 +102,7 @@ public class MainSettingsModule {
         //7.Creating "PrinterEnd" Setting components
         Label printerEndLabel = new Label("PRINTER_CUT:");
         Tooltip tooltipPrinterEnd = new Tooltip();
-        tooltipPrinterEnd.setText(Util.PINPADINI_VALUES_EXPLANATIONS.PRINTEREND.getExplanation());
+        tooltipPrinterEnd.setText(SETTINGS_VALUES_EXPLANATIONS.PRINTEREND.getExplanation());
         printerEndLabel.setTooltip(tooltipPrinterEnd);
         ChoiceBox printerEndBox = createPrinterEndChoiceBox();
         view.add(printerEndLabel, 0, 8);
@@ -127,9 +124,9 @@ public class MainSettingsModule {
         view.add(createTestFunctionsButton(toWhereUnzip),2,9);
 
         //13.Styling layout
-        view.setStyle(Util.BLACK_THEME);
+        view.setStyle(Constants.BLACK_THEME);
         view.setPrefSize(400, 350);
-        view.add(new ImageView(Util.LOGO_TRANSPARENT), 1, 10);
+        view.add(new ImageView(Constants.LOGO_TRANSPARENT), 1, 10);
         view.setAlignment(Pos.CENTER);
         view.setVgap(10);
         view.setHgap(10);
@@ -148,7 +145,7 @@ public class MainSettingsModule {
 
     private ChoiceBox createChoiceBoxWithConnections(ChoiceBox portNumber, Label ethAdr,
                                                      TextField pinpadIpAddress) {
-        ChoiceBox box = createBoundChoiceBox(Util.PINPAD_CONNECTIONS);
+        ChoiceBox box = createBoundChoiceBox(Constants.PINPAD_CONNECTIONS);
         box.setOnAction((e) -> {
             if (box.getSelectionModel().getSelectedIndex() == 0) {
                 portNumber.setDisable(false);
@@ -180,7 +177,7 @@ public class MainSettingsModule {
     }
 
     private ChoiceBox createPortNumberChoiceBox() {
-        ChoiceBox cb = createBoundChoiceBox(Util.COMPORTS);
+        ChoiceBox cb = createBoundChoiceBox(Constants.COMPORTS);
         cb.setOnAction((e) -> {
             String settingName = "ComPort=";
             String bundledSettingName = "Speed=";
@@ -210,7 +207,7 @@ public class MainSettingsModule {
     }
 
     private ChoiceBox createPrinterEndChoiceBox() {
-        ChoiceBox cb = createBoundChoiceBox(Util.PRINTEREND_VALUES);
+        ChoiceBox cb = createBoundChoiceBox(Constants.PRINTEREND_VALUES);
         cb.setOnAction(e -> {
             String settingName = "PrinterEnd=";
             this.pinpadSettings.put(settingName, cb.getSelectionModel().getSelectedItem().toString());
@@ -226,7 +223,7 @@ public class MainSettingsModule {
             if (uposItems.getSelectionModel().getSelectedItem() != null) {
                 try {
                     logList.add(getLocatDateTime() + "EXTRACTING UPOS...");
-                    new ExtractFile(toWhereUnzip.getText(),
+                    new File(toWhereUnzip.getText(),
                             uposItems.getSelectionModel().getSelectedItem().toString() + ".zip").copyFile();
                 } catch (IOException ex) {
                     logList.add(getLocatDateTime() + ex.getMessage());
@@ -237,7 +234,7 @@ public class MainSettingsModule {
             if (driverItems.getSelectionModel().getSelectedItem() != null) { //toString().equals("NULL")
                 try {
                     logList.add(getLocatDateTime() + "EXTRACTING DRIVER...");
-                    new ExtractFile(toWhereUnzip.getText(),
+                    new File(toWhereUnzip.getText(),
                             driverItems.getSelectionModel().getSelectedItem().toString() + ".zip").copyFile();
                 } catch (IOException ex) {
                     logList.add(getLocatDateTime() + ex.getMessage());

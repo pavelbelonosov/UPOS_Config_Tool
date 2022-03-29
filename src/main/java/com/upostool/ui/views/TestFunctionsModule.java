@@ -1,6 +1,6 @@
-package com.upostool.domain.views;
+package com.upostool.ui.views;
 
-import com.upostool.Util;
+import com.upostool.util.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Parent;
@@ -10,18 +10,12 @@ import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class TestFunctionsModule {
     private List<String> loglist;
@@ -109,7 +103,7 @@ public class TestFunctionsModule {
         //3.Styling
         functionButtonBox.setSpacing(5);
         serviceButtonsBox.setSpacing(5);
-        view.setStyle(Util.BLACK_THEME);
+        view.setStyle(Constants.BLACK_THEME);
         view.setPrefSize(620, 550);
         view.setSpacing(10);
         view.setPadding(new Insets(10, 10, 10, 10));

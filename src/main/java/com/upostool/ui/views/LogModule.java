@@ -1,6 +1,6 @@
-package com.upostool.domain.views;
+package com.upostool.ui.views;
 
-import com.upostool.Util;
+import com.upostool.util.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -28,10 +28,10 @@ public class LogModule {
         view.add(thisAppVersion, 0, 0);
         view.add(contact, 0, 1);
         view.add(createLogTextArea(), 0, 3);
-        view.add(new ImageView(Util.LOGO_TRANSPARENT), 0, 4);
+        view.add(new ImageView(Constants.LOGO_TRANSPARENT), 0, 4);
 
         //Styling
-        view.setStyle(Util.BLACK_THEME);
+        view.setStyle(Constants.BLACK_THEME);
         view.setPrefSize(400, 420);
         view.setAlignment(Pos.TOP_CENTER);
         view.setVgap(10);

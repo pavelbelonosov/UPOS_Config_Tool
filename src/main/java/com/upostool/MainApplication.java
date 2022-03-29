@@ -1,8 +1,7 @@
 package com.upostool;
 
 
-import com.upostool.domain.views.EnteringModule;
-import com.upostool.domain.views.TestFunctionsModule;
+import com.upostool.ui.views.EnteringModule;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;

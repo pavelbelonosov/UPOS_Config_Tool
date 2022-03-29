@@ -1,18 +1,15 @@
-package com.upostool;
+package com.upostool.util;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class ExtractFile {
+public class File {
     private String destDir;
     private String fileZip;
 
-    public ExtractFile(String destinationFolder, String fileZip) {
+    public File(String destinationFolder, String fileZip) {
         this.destDir = destinationFolder;
         this.fileZip = fileZip;
     }
@@ -28,12 +25,12 @@ public class ExtractFile {
                 os.write(b, 0, length);
             }
         }
-        unzipFile();
+        unZipFile();
         deleteZip();
     }
 
     private void createDirOnSystem(String dir){
-        File destination = new File(destDir);
+        java.io.File destination = new java.io.File(destDir);
         if (destination.exists()) {
             return;
         } else{
@@ -41,13 +38,13 @@ public class ExtractFile {
         }
     }
 
-    private void unzipFile() throws IOException {
+    private void unZipFile() throws IOException {
 
         try (ZipFile zipFile = new ZipFile(destDir+fileZip)) {
             Iterator iterator = zipFile.entries().asIterator();
             while (iterator.hasNext()) {
                 ZipEntry entry = (ZipEntry) iterator.next();
-                File entryDestination = new File(destDir, entry.getName());
+                java.io.File entryDestination = new java.io.File(destDir, entry.getName());
                 if (entry.isDirectory()) {
                     entryDestination.mkdirs();
                 } else {
@@ -61,7 +58,7 @@ public class ExtractFile {
         }
     }
     private void deleteZip(){
-        File file = new File(destDir+fileZip);
+        java.io.File file = new java.io.File(destDir+fileZip);
         if(!file.getName().contains(".zip")){
             return;
         }
