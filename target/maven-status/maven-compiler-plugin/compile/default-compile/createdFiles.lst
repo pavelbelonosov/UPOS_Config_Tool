@@ -1,5 +1,4 @@
 com\upostool\ui\views\LogModule.class
-com\upostool\domain\Setting.class
 com\upostool\ui\views\TestFunctionsModule.class
 com\upostool\util\SETTINGS_VALUES_EXPLANATIONS.class
 com\upostool\util\Constants.class
@@ -8,5 +7,4 @@ com\upostool\MainApplication.class
 com\upostool\ui\views\EnteringModule.class
 com\upostool\ui\views\MainSettingsModule.class
 com\upostool\ui\views\AdvancedSettingsModule.class
-com\upostool\DAO\SettingDAO.class
 com\upostool\util\File.class

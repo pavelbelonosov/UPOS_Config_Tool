@@ -17,7 +17,7 @@ public class File {
     public void copyFile() throws IOException {
         createDirOnSystem(destDir);
 
-        try(InputStream is = getClass().getResource(fileZip).openStream();
+        try(InputStream is = getClass().getResource("/com/upostool/"+fileZip).openStream();
             OutputStream os = new FileOutputStream(destDir+fileZip)){
             byte[] b = new byte[2048];
             int length;
