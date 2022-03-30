@@ -1,5 +1,6 @@
 package com.upostool.DAO;
 
+import com.upostool.domain.Log;
 import com.upostool.domain.Setting;
 import java.util.List;
 
@@ -13,5 +14,6 @@ public interface SettingDAO {
     void removeByName(String s);
     boolean isEmpty();
     void deleteAll();
+    Log getLog();
 
 }

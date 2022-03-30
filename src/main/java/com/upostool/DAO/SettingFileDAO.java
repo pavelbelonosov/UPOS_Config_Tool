@@ -1,7 +1,7 @@
 package com.upostool.DAO;
 
+import com.upostool.domain.Log;
 import com.upostool.domain.Setting;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,12 @@ public class SettingFileDAO implements SettingDAO {
 
     private List<Setting> settings;
     private DAOFileService service;
+    private Log log;
 
     public SettingFileDAO() {
         settings = new ArrayList<>();
         service = new DAOFileService(settings);
+        log = new Log();
     }
 
     @Override
@@ -22,15 +24,17 @@ public class SettingFileDAO implements SettingDAO {
         try {
             service.setFile(dir);
             service.getSettings();
+            log.addLog("LOADING SETTINGS FROM PINPAD.INI INTO CACHE...");
+            settings.stream().forEach(s->log.addLog(s.toString()));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.addLog(e.getMessage());
         }
         return this.settings;
     }
 
     @Override
     public Setting findByName(String name) {
-        List<Setting> list = this.settings.stream()
+        List<Setting> list = settings.stream()
                 .filter(s -> s.getName()
                         .equals(name))
                 .collect(Collectors.toList());
@@ -45,8 +49,9 @@ public class SettingFileDAO implements SettingDAO {
         try {
             service.setFile(dir);
             service.save();
+            log.addLog("SAVING PINPAD.INI...");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.addLog(e.getMessage());
         }
     }
 
@@ -54,10 +59,12 @@ public class SettingFileDAO implements SettingDAO {
     public void add(Setting s) {
         Setting existed = findByName(s.getName());
         if (existed == null) {
-            this.settings.add(s);
+            settings.add(s);
+            log.addLog("ADD "+s.toString());
             return;
         }
-        this.settings.add(this.settings.indexOf(existed), s);
+        settings.set(this.settings.indexOf(existed), s);
+        log.addLog("ADD "+s.toString());
     }
 
     @Override
@@ -67,16 +74,23 @@ public class SettingFileDAO implements SettingDAO {
 
     @Override
     public void removeByName(String name) {
-        this.settings.remove(findByName(name));
+        log.addLog("REMOVE "+name);
+        settings.remove(findByName(name));
     }
 
     @Override
     public boolean isEmpty() {
-        return this.settings.isEmpty();
+        return settings.isEmpty();
     }
 
     @Override
     public void deleteAll() {
-        this.settings.clear();
+        settings.clear();
+        log.addLog("CACHE CLEARED...");
+    }
+
+    @Override
+    public Log getLog() {
+        return log;
     }
 }

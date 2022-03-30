@@ -1,5 +1,6 @@
 package com.upostool.ui.views;
 
+import com.upostool.domain.Log;
 import com.upostool.util.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,9 +14,9 @@ import java.util.List;
 
 public class LogModule {
     private GridPane view;
-    private List<String> log;
+    private Log log;
 
-    public LogModule(List log) {
+    public LogModule(Log log) {
         this.view = new GridPane();
         this.log = log;
         setView();
@@ -43,9 +44,9 @@ public class LogModule {
         TextArea area = new TextArea();
         area.setWrapText(true);
         area.setMinSize(200, 300);
-        StringBuilder str = new StringBuilder();
-        this.log.stream().forEach(line -> str.append(line + "\n"));
-        area.setText(str.toString());
+        //StringBuilder str = new StringBuilder();
+        //this.log.stream().forEach(line -> str.append(line + "\n"));
+        area.setText(this.log.toString());
         area.end();
         return area;
     }
