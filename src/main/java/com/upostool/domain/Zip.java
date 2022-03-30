@@ -1,20 +1,20 @@
-package com.upostool.util;
+package com.upostool.domain;
 
 import java.io.*;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class File {
+public class Zip {
     private String destDir;
     private String fileZip;
 
-    public File(String destinationFolder, String fileZip) {
+    public Zip(String destinationFolder, String fileZip) {
         this.destDir = destinationFolder;
         this.fileZip = fileZip;
     }
 
-    public void copyFile() throws IOException {
+    public void copyZip() throws IOException {
         createDirOnSystem(destDir);
 
         try(InputStream is = getClass().getResource("/com/upostool/"+fileZip).openStream();
