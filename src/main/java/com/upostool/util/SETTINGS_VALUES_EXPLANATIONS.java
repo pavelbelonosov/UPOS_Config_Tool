@@ -69,7 +69,6 @@ public enum SETTINGS_VALUES_EXPLANATIONS {
     COMMTIMEOUTS("Настройка таймаутов порта в виде:\n" +
             "ReadIntervalTimeout-ReadTotalTimeoutMultiplier-ReadTotalTimeoutConstant");
 
-
     private String explanation;
 
     SETTINGS_VALUES_EXPLANATIONS(String explanation) {

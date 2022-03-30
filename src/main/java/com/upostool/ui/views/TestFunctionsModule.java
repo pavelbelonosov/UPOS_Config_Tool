@@ -1,5 +1,6 @@
 package com.upostool.ui.views;
 
+import com.upostool.DAO.SettingFileDAO;
 import com.upostool.util.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -18,17 +19,19 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class TestFunctionsModule {
-    private List<String> loglist;
+    //private List<String> loglist;
+    private SettingFileDAO settingFileDAO;
     private HBox view;
     private String uposDir;
     private String cheque;
     private final int COMPONENT_WIDTH = 100;
 
-    public TestFunctionsModule(List log, String uposDir) {
-        this.loglist = log;
+    public TestFunctionsModule(SettingFileDAO sfd, String uposDir) {
+        //this.loglist = log;
         this.view = new HBox();
         this.uposDir = uposDir + "/";
         this.cheque = uposDir + "/p";
+        this.settingFileDAO=sfd;
         setView();
     }
 
@@ -116,17 +119,17 @@ public class TestFunctionsModule {
         btn.setOnAction(e -> {
             try {
                 deleteCheque();
-                loglist.add(getLocatDateTime() + "PROCESSING " + buttonName + "...");
+                //loglist.add(getLocatDateTime() + "PROCESSING " + buttonName + "...");
                 function("loadparm.exe", loadparmFirstParameter, loadparmSecondParameter);
-                loglist.add(getLocatDateTime() + "LOADPARM " + loadparmFirstParameter + " " + loadparmSecondParameter);
+                //loglist.add(getLocatDateTime() + "LOADPARM " + loadparmFirstParameter + " " + loadparmSecondParameter);
             } catch (Exception ex) {
-                loglist.add(getLocatDateTime() + ex.getMessage());
+                //loglist.add(getLocatDateTime() + ex.getMessage());
             }
             try {
-                loglist.add(getLocatDateTime() + "SB_PILOT " + loadparmFirstParameter + " " + loadparmSecondParameter);
+                //loglist.add(getLocatDateTime() + "SB_PILOT " + loadparmFirstParameter + " " + loadparmSecondParameter);
                 function("sb_pilot.exe", loadparmFirstParameter, loadparmSecondParameter);
             } catch (Exception ex) {
-                loglist.add(getLocatDateTime() + ex.getMessage());
+                //loglist.add(getLocatDateTime() + ex.getMessage());
             }
             loadCheque(chequeArea);
             loadUPOSLog("sbkernel", sbkernellArea);
@@ -141,11 +144,11 @@ public class TestFunctionsModule {
         btn.setOnAction(e -> {
             try {
                 deleteCheque();
-                loglist.add(getLocatDateTime() + "PROCESSING REMOTE LOAD...");
+                this.settingFileDAO.getLog().addLog("PROCESSING REMOTE LOAD...");
                 remoteLoadFunction(activationCode.getText());
-                loglist.add(getLocatDateTime() + "LOADPARM " + 21 + " " + activationCode.getText());
+                //loglist.add(getLocatDateTime() + "LOADPARM " + 21 + " " + activationCode.getText());
             } catch (Exception ex) {
-                loglist.add(getLocatDateTime() + ex.getMessage());
+                //loglist.add(getLocatDateTime() + ex.getMessage());
             }
             loadUPOSLog("sbkernel", sbkernellArea);
             loadUPOSLog("upos", sbkernellArea);
@@ -193,7 +196,7 @@ public class TestFunctionsModule {
         b.setMinWidth(COMPONENT_WIDTH);
         b.setOnAction(e -> {
             try {
-                loglist.add(getLocatDateTime() + name + " " + ip.getText() + "...");
+                //loglist.add(getLocatDateTime() + name + " " + ip.getText() + "...");
                 Process p;
                 switch (command) {
                     case "ping":
@@ -215,7 +218,7 @@ public class TestFunctionsModule {
                 }
                 chequeArea.setText(commandOutput.toString());
             } catch (IOException ex) {
-                loglist.add(getLocatDateTime() + ex.getMessage());
+                //loglist.add(getLocatDateTime() + ex.getMessage());
             }
         });
         return b;
@@ -273,24 +276,24 @@ public class TestFunctionsModule {
         try (Socket s = new Socket(host, port)) {
             return true;
         } catch (IOException ex) {
-            loglist.add(getLocatDateTime() + ex.getMessage());
+            //loglist.add(getLocatDateTime() + ex.getMessage());
             return false;
         }
     }
 
     private void actionDLL(String unreg) {
         try {
-            loglist.add(getLocatDateTime() + "TRYING REGISTER SBRF.DLL&SBRFCOM.DLL...");
+            //loglist.add(getLocatDateTime() + "TRYING REGISTER SBRF.DLL&SBRFCOM.DLL...");
             if (unreg == "") {
                 Process p = new ProcessBuilder("cmd.exe", "/c", "regsvr32.exe",
                         uposDir + "sbrf.dll", uposDir + "sbrfcom.dll").start();
             } else {
-                loglist.add(getLocatDateTime() + "TRYING UNREGISTER SBRF.DLL&SBRFCOM.DLL...");
+                //loglist.add(getLocatDateTime() + "TRYING UNREGISTER SBRF.DLL&SBRFCOM.DLL...");
                 Process p = new ProcessBuilder("cmd.exe", "/c", "regsvr32.exe", unreg,
                         uposDir + "sbrf.dll", uposDir + "sbrfcom.dll").start();
             }
         } catch (IOException e) {
-            loglist.add(getLocatDateTime() + e.getMessage());
+           // loglist.add(getLocatDateTime() + e.getMessage());
         }
     }
 
@@ -298,16 +301,16 @@ public class TestFunctionsModule {
         try {
             Process p = new ProcessBuilder(uposDir + "agent.exe", argument).start();
         } catch (IOException e) {
-            loglist.add(getLocatDateTime() + e.getMessage());
+            //loglist.add(getLocatDateTime() + e.getMessage());
         }
     }
 
     private void cmdCommand(String command) {
         try {
-            loglist.add(getLocatDateTime() + "EXECUTING CMD COMMAND " + command + "...");
+            //loglist.add(getLocatDateTime() + "EXECUTING CMD COMMAND " + command + "...");
             Process p = new ProcessBuilder("cmd.exe", "/c", command).start();
         } catch (IOException e) {
-            loglist.add(getLocatDateTime() + e.getMessage());
+           // loglist.add(getLocatDateTime() + e.getMessage());
         }
     }
 
@@ -322,7 +325,7 @@ public class TestFunctionsModule {
                     fin.read(buffer, 0, fin.available());
                     chequeArea.setText(new String(buffer, "cp866"));
                 } catch (Exception ex) {
-                    loglist.add(getLocatDateTime() + ex.getMessage());
+                   // loglist.add(getLocatDateTime() + ex.getMessage());
                 }
             }
         }
@@ -342,7 +345,7 @@ public class TestFunctionsModule {
                     });
             uposLogArea.setText(logContent.toString());
         } catch (IOException e) {
-            loglist.add(getLocatDateTime() + e.getMessage() + " NOT FOUND");
+           // loglist.add(getLocatDateTime() + e.getMessage() + " NOT FOUND");
         }
         uposLogArea.appendText("");
         view.setDisable(false);
@@ -352,7 +355,7 @@ public class TestFunctionsModule {
         if (Files.exists(Paths.get(cheque))) {
             Files.delete(Paths.get(cheque));
             if (!Files.exists(Paths.get(cheque))) {
-                loglist.add(getLocatDateTime() + "FILE P DELETED... ");
+                //loglist.add(getLocatDateTime() + "FILE P DELETED... ");
             }
         }
 

@@ -2,6 +2,7 @@ package com.upostool.DAO;
 
 import com.upostool.domain.Log;
 import com.upostool.domain.Setting;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,13 @@ public class SettingFileDAO implements SettingDAO {
     @Override
     public List<Setting> findAll(String dir) {
         try {
+            log.addLog("LOADING SETTINGS...");
+            deleteAll();
             service.setFile(dir);
             service.getSettings();
-            log.addLog("LOADING SETTINGS FROM PINPAD.INI INTO CACHE...");
-            settings.stream().forEach(s->log.addLog(s.toString()));
+            settings.stream().forEach(s -> log.addLog(s.toString()));
         } catch (Exception e) {
-            log.addLog(e.getMessage());
+            log.addLog("NO ACCESS " + e.getMessage());
         }
         return this.settings;
     }
@@ -60,11 +62,12 @@ public class SettingFileDAO implements SettingDAO {
         Setting existed = findByName(s.getName());
         if (existed == null) {
             settings.add(s);
-            log.addLog("ADD "+s.toString());
+            log.addLog("ADD " + s.toString());
             return;
         }
         settings.set(this.settings.indexOf(existed), s);
-        log.addLog("ADD "+s.toString());
+        log.addLog("REMOVE "+existed.toString());
+        log.addLog("ADD " + s.toString());
     }
 
     @Override
@@ -74,7 +77,9 @@ public class SettingFileDAO implements SettingDAO {
 
     @Override
     public void removeByName(String name) {
-        log.addLog("REMOVE "+name);
+        if (findByName(name) != null) {
+            log.addLog("REMOVE " + findByName(name));
+        }
         settings.remove(findByName(name));
     }
 
@@ -86,7 +91,7 @@ public class SettingFileDAO implements SettingDAO {
     @Override
     public void deleteAll() {
         settings.clear();
-        log.addLog("CACHE CLEARED...");
+        log.addLog("CACHE CLEARED");
     }
 
     @Override

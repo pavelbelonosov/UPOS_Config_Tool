@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -23,15 +24,11 @@ import java.util.*;
 
 public class MainSettingsModule {
     private GridPane view;
-    private List<String> logList;
-    private Map<String, String> pinpadSettings;
     private SettingFileDAO settingFileDAO;
 
     public MainSettingsModule() {
         this.view = new GridPane();
-        this.pinpadSettings = new LinkedHashMap<>();
-        this.logList = new ArrayList<>();
-        this.settingFileDAO =new SettingFileDAO();
+        this.settingFileDAO = new SettingFileDAO();
         setView();
     }
 
@@ -126,7 +123,7 @@ public class MainSettingsModule {
         view.add(createLoadFromPinpadButton(toWhereUnzip), 0, 4);
 
         //12.Adding "Test function" button
-        view.add(createTestFunctionsButton(toWhereUnzip),2,9);
+        view.add(createTestFunctionsButton(toWhereUnzip), 2, 9);
 
         //13.Styling layout
         view.setStyle(Constants.BLACK_THEME);
@@ -170,15 +167,10 @@ public class MainSettingsModule {
         CheckBox cb = new CheckBox();
         cb.selectedProperty().addListener((change, oldValue, newValue) -> {
             String settingName = "ShowScreens";
-
             if (newValue) {
-                //this.pinpadSettings.put(settingName, "1");
-                this.settingFileDAO.add(new Setting(settingName,"1"));
-                //insertSettingsStateIntoLogList(settingName);
+                this.settingFileDAO.add(new Setting(settingName, "1"));
             } else {
-                //pinpadSettings.put(settingName, "0");
-                this.settingFileDAO.add(new Setting(settingName,"0"));
-                //insertSettingsStateIntoLogList(settingName);
+                this.settingFileDAO.add(new Setting(settingName, "0"));
             }
         });
         return cb;
@@ -187,38 +179,27 @@ public class MainSettingsModule {
     private ChoiceBox createPortNumberChoiceBox() {
         ChoiceBox cb = createBoundChoiceBox(Constants.COMPORTS);
         cb.setOnAction((e) -> {
-            String settingName = "ComPort";
-            String bundledSettingName = "Speed";
+            String setting = "ComPort";
+            String bundledSetting = "Speed";
             String value = cb.getSelectionModel().getSelectedIndex() + 1 + "";
-            //this.pinpadSettings.entrySet().removeIf(entries -> entries.getKey().equals("PinpadIPAddr="));
             this.settingFileDAO.removeByName("PinpadIPAddr");
-            //this.pinpadSettings.entrySet().removeIf(entries -> entries.getKey().equals("PinpadIPPort="));
             this.settingFileDAO.removeByName("PinpadIPPort");
-            //this.pinpadSettings.put(settingName, (cb.getSelectionModel().getSelectedIndex() + 1 + ""));
-            this.settingFileDAO.add(new Setting(settingName,value));
-            //this.pinpadSettings.put(bundledSettingName, "115200");
-            this.settingFileDAO.add(new Setting(bundledSettingName,"115200"));
-            //insertSettingsStateIntoLogList(settingName);
-            //insertSettingsStateIntoLogList(bundledSettingName);
+            this.settingFileDAO.add(new Setting(setting, value));
+            this.settingFileDAO.add(new Setting(bundledSetting, "115200"));
         });
         return cb;
     }
 
     private TextField createPinpadIpAddressTextField() {
         TextField textField = new TextField("0.0.0.0");
-        String settingName = "PinpadIPAddr";
-        String bundledSettingAnme = "PinpadIPPort";
+        String setting = "PinpadIPAddr";
+        String bundledSetting = "PinpadIPPort";
         textField.textProperty().addListener((change, oldValue, newValue) -> {
-            String value = newValue.trim().replaceAll("\\s|[a-zA-Z]","");
-            //this.pinpadSettings.entrySet().removeIf((entries) -> entries.getKey().equals("ComPort="));
+            String value = newValue.trim().replaceAll("\\s|[a-zA-Z]", "");
             this.settingFileDAO.removeByName("ComPort");
-            //this.pinpadSettings.entrySet().removeIf((entries) -> entries.getKey().equals("Speed="));
             this.settingFileDAO.removeByName("Speed");
-            //this.pinpadSettings.put(settingName, newValue.trim().replaceAll("\\s|[a-zA-Z]", ""));
-            this.settingFileDAO.add(new Setting(settingName,value));
-            this.pinpadSettings.put(bundledSettingAnme, "8888");
-            //insertSettingsStateIntoLogList(settingName);
-            //insertSettingsStateIntoLogList(bundledSettingAnme);
+            this.settingFileDAO.add(new Setting(setting, value));
+            this.settingFileDAO.add(new Setting(bundledSetting, "8888"));
         });
         return textField;
     }
@@ -228,9 +209,7 @@ public class MainSettingsModule {
         cb.setOnAction(e -> {
             String settingName = "PrinterEnd";
             String value = cb.getSelectionModel().getSelectedItem().toString();
-            //this.pinpadSettings.put(settingName, cb.getSelectionModel().getSelectedItem().toString());
-            this.settingFileDAO.add(new Setting(settingName,value));
-            //insertSettingsStateIntoLogList(settingName);
+            this.settingFileDAO.add(new Setting(settingName, value));
         });
         return cb;
     }
@@ -241,24 +220,24 @@ public class MainSettingsModule {
         btn.setOnAction((e) -> {
             if (uposItems.getSelectionModel().getSelectedItem() != null) {
                 try {
-                    //logList.add(getLocatDateTime() + "EXTRACTING UPOS...");
+                    this.settingFileDAO.getLog().addLog("EXTRACTING UPOS...");
                     new Zip(toWhereUnzip.getText(),
-                            uposItems.getSelectionModel().getSelectedItem().toString() + ".zip").copyZip();
+                            uposItems.getSelectionModel().
+                                    getSelectedItem().toString() + ".zip").copyZip();
                 } catch (IOException ex) {
-                    //logList.add(getLocatDateTime() + ex.getMessage());
+                    this.settingFileDAO.getLog().addLog(ex.getMessage());
                     uposExtractError.setDisable(false);
-                    uposExtractError.setText("ERROR!");
                 }
             }
-            if (driverItems.getSelectionModel().getSelectedItem() != null) { //toString().equals("NULL")
+            if (driverItems.getSelectionModel().getSelectedItem() != null) {
                 try {
-                    //logList.add(getLocatDateTime() + "EXTRACTING DRIVER...");
+                    this.settingFileDAO.getLog().addLog("EXTRACTING DRIVER...");
                     new Zip(toWhereUnzip.getText(),
-                            driverItems.getSelectionModel().getSelectedItem().toString() + ".zip").copyZip();
+                            driverItems.getSelectionModel().
+                                    getSelectedItem().toString() + ".zip").copyZip();
                 } catch (IOException ex) {
-                    //logList.add(getLocatDateTime() + ex.getMessage());
+                    this.settingFileDAO.getLog().addLog(ex.getMessage());
                     driverExtractError.setDisable(false);
-                    driverExtractError.setText("ERROR!");
                 }
             }
         });
@@ -269,7 +248,7 @@ public class MainSettingsModule {
         Button btn = new Button("ADVANCED");
         btn.setOnAction(e -> {
             EnteringModule.openStage("UPOS ADVANCED SETTINGS",
-                    new AdvancedSettingsModule(this.pinpadSettings, this.logList).getView());
+                    new AdvancedSettingsModule(this.settingFileDAO).getView());
         });
         return btn;
     }
@@ -277,12 +256,7 @@ public class MainSettingsModule {
     private Button createSaveButton(TextField toWhereUnzip) {
         Button btn = new Button("SAVE FILE");
         btn.setOnAction(e -> {
-                //logList.add(getLocatDateTime() + "SAVING PINPAD.INI...");
-                //new DAOFileService(toWhereUnzip.getText(), pinpadSettings).save();
-                this.settingFileDAO.save(toWhereUnzip.getText());
-
-               // logList.add(getLocatDateTime() + ex.getMessage()); !!!!!!!!
-
+            this.settingFileDAO.save(toWhereUnzip.getText());
         });
         return btn;
     }
@@ -290,14 +264,7 @@ public class MainSettingsModule {
     private Button createLoadFromPinpadButton(TextField toWhereUnzip) {
         Button btn = new Button("LOAD FROM FILE");
         btn.setOnAction(e -> {
-
-                //logList.add(getLocatDateTime() + "LOADING SETTINGS FROM PINPAD.INI INTO CACHE...");
-                //this.pinpadSettings = new DAOFileService(toWhereUnzip.getText()).getSettings();
-                this.settingFileDAO.findAll(toWhereUnzip.getText());
-                //logList.add(getLocatDateTime() + this.pinpadSettings.entrySet());
-
-                //logList.add(getLocatDateTime() + ex.getMessage());
-
+            this.settingFileDAO.findAll(toWhereUnzip.getText());
         });
         return btn;
     }
@@ -305,10 +272,7 @@ public class MainSettingsModule {
     private Button createResetButton() {
         Button btn = new Button("CLEAR CACHE");
         btn.setOnAction(e -> {
-            //logList.add(getLocatDateTime() + "CLEARING PINPAD SETTINGS IN CACHE...");
-            //this.pinpadSettings.clear();
             this.settingFileDAO.deleteAll();
-
         });
         return btn;
     }
@@ -316,7 +280,8 @@ public class MainSettingsModule {
     private Button createLogButton() {
         Button btn = new Button("LOG&INFO");
         btn.setOnAction(e -> {
-            EnteringModule.openStage("LOG&INFO", new LogModule(this.settingFileDAO.getLog()).getView());
+            EnteringModule.openStage("LOG&INFO",
+                    new LogModule(this.settingFileDAO.getLog()).getView());
         });
         return btn;
     }
@@ -324,7 +289,8 @@ public class MainSettingsModule {
     private Button createTestFunctionsButton(TextField toWhereUnzip) {
         Button btn = new Button("FUNCTIONS");
         btn.setOnAction(e -> {
-            EnteringModule.openStage("UPOS TEST", new TestFunctionsModule(this.logList, toWhereUnzip.getText()).getView());
+            EnteringModule.openStage("UPOS TEST",
+                    new TestFunctionsModule(this.settingFileDAO, toWhereUnzip.getText()).getView());
         });
         return btn;
     }
@@ -334,17 +300,6 @@ public class MainSettingsModule {
         hSeparator.setPrefHeight(10);
         return hSeparator;
     }
-
-   /* private String getLocatDateTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
-        String timeStamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(dtf) + ":  ";
-        return timeStamp;
-    }
-
-    private void insertSettingsStateIntoLogList(String settingName) {
-        logList.add(getLocatDateTime() + "ADDING " + settingName
-                + pinpadSettings.get(settingName) + " INTO CACHE...");
-    }*/
 
     protected Parent getView() {
         return view;
