@@ -1,22 +1,21 @@
-package com.upostool.domain;
+package com.upostool.service;
 
 import java.io.*;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class Zip {
+public class FileZip {
     private String destDir;
     private String fileZip;
 
-    public Zip(String destinationFolder, String fileZip) {
+    public FileZip(String destinationFolder, String fileZip) {
         this.destDir = destinationFolder;
         this.fileZip = fileZip;
     }
 
     public void copyZip() throws IOException {
-        createDirOnSystem(destDir);
-
+        createDirOnSystem();
         try(InputStream is = getClass().getResource("/com/upostool/"+fileZip).openStream();
             OutputStream os = new FileOutputStream(destDir+fileZip)){
             byte[] b = new byte[2048];
@@ -29,8 +28,8 @@ public class Zip {
         deleteZip();
     }
 
-    private void createDirOnSystem(String dir){
-        java.io.File destination = new java.io.File(destDir);
+    private void createDirOnSystem(){
+        File destination = new File(destDir);
         if (destination.exists()) {
             return;
         } else{
@@ -57,8 +56,9 @@ public class Zip {
             }
         }
     }
+
     private void deleteZip(){
-        java.io.File file = new java.io.File(destDir+fileZip);
+        File file = new File(destDir+fileZip);
         if(!file.getName().contains(".zip")){
             return;
         }

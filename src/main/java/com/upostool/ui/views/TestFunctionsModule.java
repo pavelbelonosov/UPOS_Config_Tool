@@ -1,6 +1,6 @@
 package com.upostool.ui.views;
 
-import com.upostool.DAO.SettingFileDAO;
+import com.upostool.DAO.SettingDAO;
 import com.upostool.util.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -16,17 +16,16 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 public class TestFunctionsModule {
     //private List<String> loglist;
-    private SettingFileDAO settingFileDAO;
+    private SettingDAO settingFileDAO;
     private HBox view;
     private String uposDir;
     private String cheque;
     private final int COMPONENT_WIDTH = 100;
 
-    public TestFunctionsModule(SettingFileDAO sfd, String uposDir) {
+    public TestFunctionsModule(SettingDAO sfd, String uposDir) {
         //this.loglist = log;
         this.view = new HBox();
         this.uposDir = uposDir + "/";

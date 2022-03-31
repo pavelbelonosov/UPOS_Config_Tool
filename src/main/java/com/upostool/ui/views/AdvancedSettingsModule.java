@@ -1,6 +1,6 @@
 package com.upostool.ui.views;
 
-import com.upostool.DAO.SettingFileDAO;
+import com.upostool.DAO.SettingDAO;
 import com.upostool.domain.Setting;
 import com.upostool.util.Constants;
 import com.upostool.util.SETTINGS_VALUES_EXPLANATIONS;
@@ -15,9 +15,9 @@ import java.util.Arrays;
 
 public class AdvancedSettingsModule {
     private GridPane view;
-    private SettingFileDAO settingFileDAO;
+    private SettingDAO settingFileDAO;
 
-    public AdvancedSettingsModule(SettingFileDAO sfd) {
+    public AdvancedSettingsModule(SettingDAO sfd) {
         this.view = new GridPane();
         this.settingFileDAO = sfd;
         setView();
@@ -238,7 +238,7 @@ public class AdvancedSettingsModule {
         view.add(create1or0CheckBox("VivoLog"), 6, 14);
 
         //32.WorkingDir
-        TextField workDirTextField = new TextField("С:/sc552/data/");
+        TextField workDirTextField = new TextField("C:/sc552/dir/");
         view.add(createLabelWithTooltip("WorkingDir",
                 SETTINGS_VALUES_EXPLANATIONS.WORKINGDIR.getExplanation()), 4, 15);
         view.add(workDirTextField, 5, 15);
@@ -297,7 +297,7 @@ public class AdvancedSettingsModule {
         cb.selectedProperty().addListener((change, oldValue, newValue) -> {
             String value = choiceBox.getSelectionModel().getSelectedItem().toString();
             if (newValue) {
-                this.settingFileDAO.add(new Setting(settingName, value));
+                this.settingFileDAO.update(new Setting(settingName, value));
             } else {
                 this.settingFileDAO.removeByName(settingName);
             }
@@ -310,7 +310,7 @@ public class AdvancedSettingsModule {
         cb.selectedProperty().addListener((change, oldValue, newValue) -> {
             String value = field.getText();
             if (newValue) {
-                this.settingFileDAO.add(new Setting(settingName,value));
+                this.settingFileDAO.update(new Setting(settingName,value));
             } else {
                 this.settingFileDAO.removeByName(settingName);
             }
@@ -322,9 +322,9 @@ public class AdvancedSettingsModule {
         CheckBox cb = new CheckBox();
         cb.selectedProperty().addListener((change, oldValue, newValue) -> {
             if (newValue) {
-                this.settingFileDAO.add(new Setting(settingName, "1"));
+                this.settingFileDAO.update(new Setting(settingName, "1"));
             } else {
-                this.settingFileDAO.add(new Setting(settingName, "0"));
+                this.settingFileDAO.update(new Setting(settingName, "0"));
             }
         });
         return cb;

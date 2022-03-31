@@ -1,8 +1,8 @@
 package com.upostool.ui.views;
 
-import com.upostool.DAO.SettingFileDAO;
+import com.upostool.DAO.SettingDAO;
 import com.upostool.domain.Setting;
-import com.upostool.domain.Zip;
+import com.upostool.service.FileZip;
 import com.upostool.util.*;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -14,21 +14,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
 public class MainSettingsModule {
     private GridPane view;
-    private SettingFileDAO settingFileDAO;
+    private SettingDAO settingDAO;
 
     public MainSettingsModule() {
         this.view = new GridPane();
-        this.settingFileDAO = new SettingFileDAO();
+        this.settingDAO = new SettingDAO();
         setView();
     }
 
@@ -168,9 +164,9 @@ public class MainSettingsModule {
         cb.selectedProperty().addListener((change, oldValue, newValue) -> {
             String settingName = "ShowScreens";
             if (newValue) {
-                this.settingFileDAO.add(new Setting(settingName, "1"));
+                this.settingDAO.update(new Setting(settingName, "1"));
             } else {
-                this.settingFileDAO.add(new Setting(settingName, "0"));
+                this.settingDAO.update(new Setting(settingName, "0"));
             }
         });
         return cb;
@@ -182,10 +178,10 @@ public class MainSettingsModule {
             String setting = "ComPort";
             String bundledSetting = "Speed";
             String value = cb.getSelectionModel().getSelectedIndex() + 1 + "";
-            this.settingFileDAO.removeByName("PinpadIPAddr");
-            this.settingFileDAO.removeByName("PinpadIPPort");
-            this.settingFileDAO.add(new Setting(setting, value));
-            this.settingFileDAO.add(new Setting(bundledSetting, "115200"));
+            this.settingDAO.removeByName("PinpadIPAddr");
+            this.settingDAO.removeByName("PinpadIPPort");
+            this.settingDAO.update(new Setting(setting, value));
+            this.settingDAO.update(new Setting(bundledSetting, "115200"));
         });
         return cb;
     }
@@ -196,10 +192,10 @@ public class MainSettingsModule {
         String bundledSetting = "PinpadIPPort";
         textField.textProperty().addListener((change, oldValue, newValue) -> {
             String value = newValue.trim().replaceAll("\\s|[a-zA-Z]", "");
-            this.settingFileDAO.removeByName("ComPort");
-            this.settingFileDAO.removeByName("Speed");
-            this.settingFileDAO.add(new Setting(setting, value));
-            this.settingFileDAO.add(new Setting(bundledSetting, "8888"));
+            this.settingDAO.removeByName("ComPort");
+            this.settingDAO.removeByName("Speed");
+            this.settingDAO.update(new Setting(setting, value));
+            this.settingDAO.update(new Setting(bundledSetting, "8888"));
         });
         return textField;
     }
@@ -209,7 +205,7 @@ public class MainSettingsModule {
         cb.setOnAction(e -> {
             String settingName = "PrinterEnd";
             String value = cb.getSelectionModel().getSelectedItem().toString();
-            this.settingFileDAO.add(new Setting(settingName, value));
+            this.settingDAO.update(new Setting(settingName, value));
         });
         return cb;
     }
@@ -220,23 +216,23 @@ public class MainSettingsModule {
         btn.setOnAction((e) -> {
             if (uposItems.getSelectionModel().getSelectedItem() != null) {
                 try {
-                    this.settingFileDAO.getLog().addLog("EXTRACTING UPOS...");
-                    new Zip(toWhereUnzip.getText(),
+                    this.settingDAO.getLog().addLog("EXTRACTING UPOS...");
+                    new FileZip(toWhereUnzip.getText(),
                             uposItems.getSelectionModel().
                                     getSelectedItem().toString() + ".zip").copyZip();
                 } catch (IOException ex) {
-                    this.settingFileDAO.getLog().addLog(ex.getMessage());
+                    this.settingDAO.getLog().addLog(ex.getMessage());
                     uposExtractError.setDisable(false);
                 }
             }
             if (driverItems.getSelectionModel().getSelectedItem() != null) {
                 try {
-                    this.settingFileDAO.getLog().addLog("EXTRACTING DRIVER...");
-                    new Zip(toWhereUnzip.getText(),
+                    this.settingDAO.getLog().addLog("EXTRACTING DRIVER...");
+                    new FileZip(toWhereUnzip.getText(),
                             driverItems.getSelectionModel().
                                     getSelectedItem().toString() + ".zip").copyZip();
                 } catch (IOException ex) {
-                    this.settingFileDAO.getLog().addLog(ex.getMessage());
+                    this.settingDAO.getLog().addLog(ex.getMessage());
                     driverExtractError.setDisable(false);
                 }
             }
@@ -248,7 +244,7 @@ public class MainSettingsModule {
         Button btn = new Button("ADVANCED");
         btn.setOnAction(e -> {
             EnteringModule.openStage("UPOS ADVANCED SETTINGS",
-                    new AdvancedSettingsModule(this.settingFileDAO).getView());
+                    new AdvancedSettingsModule(this.settingDAO).getView());
         });
         return btn;
     }
@@ -256,7 +252,7 @@ public class MainSettingsModule {
     private Button createSaveButton(TextField toWhereUnzip) {
         Button btn = new Button("SAVE FILE");
         btn.setOnAction(e -> {
-            this.settingFileDAO.save(toWhereUnzip.getText());
+            this.settingDAO.save(toWhereUnzip.getText());
         });
         return btn;
     }
@@ -264,7 +260,7 @@ public class MainSettingsModule {
     private Button createLoadFromPinpadButton(TextField toWhereUnzip) {
         Button btn = new Button("LOAD FROM FILE");
         btn.setOnAction(e -> {
-            this.settingFileDAO.findAll(toWhereUnzip.getText());
+            this.settingDAO.findAll(toWhereUnzip.getText());
         });
         return btn;
     }
@@ -272,7 +268,7 @@ public class MainSettingsModule {
     private Button createResetButton() {
         Button btn = new Button("CLEAR CACHE");
         btn.setOnAction(e -> {
-            this.settingFileDAO.deleteAll();
+            this.settingDAO.deleteAll();
         });
         return btn;
     }
@@ -281,7 +277,7 @@ public class MainSettingsModule {
         Button btn = new Button("LOG&INFO");
         btn.setOnAction(e -> {
             EnteringModule.openStage("LOG&INFO",
-                    new LogModule(this.settingFileDAO.getLog()).getView());
+                    new LogModule(this.settingDAO.getLog()).getView());
         });
         return btn;
     }
@@ -290,7 +286,7 @@ public class MainSettingsModule {
         Button btn = new Button("FUNCTIONS");
         btn.setOnAction(e -> {
             EnteringModule.openStage("UPOS TEST",
-                    new TestFunctionsModule(this.settingFileDAO, toWhereUnzip.getText()).getView());
+                    new TestFunctionsModule(this.settingDAO, toWhereUnzip.getText()).getView());
         });
         return btn;
     }
