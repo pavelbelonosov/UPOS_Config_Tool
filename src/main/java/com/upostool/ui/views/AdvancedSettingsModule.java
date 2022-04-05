@@ -1,8 +1,8 @@
 package com.upostool.ui.views;
 
-import com.upostool.DAO.SettingDAO;
+import com.upostool.DAO.FileSettingDAO;
 import com.upostool.domain.Setting;
-import com.upostool.util.Constants;
+import com.upostool.util.Cons;
 import com.upostool.util.SETTINGS_VALUES_EXPLANATIONS;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -15,9 +15,9 @@ import java.util.Arrays;
 
 public class AdvancedSettingsModule {
     private GridPane view;
-    private SettingDAO settingFileDAO;
+    private FileSettingDAO settingFileDAO;
 
-    public AdvancedSettingsModule(SettingDAO sfd) {
+    public AdvancedSettingsModule(FileSettingDAO sfd) {
         this.view = new GridPane();
         this.settingFileDAO = sfd;
         setView();
@@ -41,7 +41,7 @@ public class AdvancedSettingsModule {
         view.add(createBoundWithTextFieldCheckBox(dayliReportTextField, "DayliReport"), 2, 1);
 
         //3.Department
-        ChoiceBox departmentsChoiceBox = createChoiceBox(Constants.DEPARTMENTS);
+        ChoiceBox departmentsChoiceBox = createChoiceBox(Cons.DEPARTMENTS);
         view.add(createLabelWithTooltip("Department",
                 SETTINGS_VALUES_EXPLANATIONS.DEPARTMENT.getExplanation()), 0, 3);
         view.add(departmentsChoiceBox, 1, 3);
@@ -68,7 +68,7 @@ public class AdvancedSettingsModule {
         view.add(createBoundWithTextFieldCheckBox(extraDelayTextField, "ExtraDelay"), 2, 6);
 
         //7.FakeModel
-        ChoiceBox fakeModelChoiceBox = createChoiceBox(Constants.PINPAD_MODELS);
+        ChoiceBox fakeModelChoiceBox = createChoiceBox(Cons.PINPAD_MODELS);
         view.add(createLabelWithTooltip("FakeModel"
                 , SETTINGS_VALUES_EXPLANATIONS.FAKEMODEL.getExplanation()), 0, 7);
         view.add(fakeModelChoiceBox, 1, 7);
@@ -136,7 +136,7 @@ public class AdvancedSettingsModule {
         view.add(create1or0CheckBox("OnlyDos"), 2, 16);
 
         //17.OptimalSpeed
-        ChoiceBox optimalSpeedChoiceBox = createChoiceBox(Constants.PINPAD_SPEED);
+        ChoiceBox optimalSpeedChoiceBox = createChoiceBox(Cons.PINPAD_SPEED);
         view.add(createLabelWithTooltip("OptimalSpeed",
                 SETTINGS_VALUES_EXPLANATIONS.OPTIMALSPEED.getExplanation()), 4, 0);
         view.add(optimalSpeedChoiceBox, 5, 0);
@@ -197,7 +197,7 @@ public class AdvancedSettingsModule {
         view.add(createBoundWithTextFieldCheckBox(printerInverseTextField, "PrinterInverse"), 6, 8);
 
         //26.PrinterType
-        ChoiceBox printerTypeCBox = createChoiceBox(Constants.PRINTER_TYPE);
+        ChoiceBox printerTypeCBox = createChoiceBox(Cons.PRINTER_TYPE);
         view.add(createLabelWithTooltip("PrinterType",
                 SETTINGS_VALUES_EXPLANATIONS.PRINTERTYPE.getExplanation()), 4, 9);
         view.add(printerTypeCBox, 5, 9);
@@ -268,7 +268,7 @@ public class AdvancedSettingsModule {
         for (int i = 0; i < view.getRowCount(); i++) {
             view.add(createVerticalSeparator(), 3, i);
         }
-        view.setStyle(Constants.BLACK_THEME);
+        view.setStyle(Cons.BLACK_THEME);
         view.setPrefSize(650, 500);
         view.setAlignment(Pos.TOP_LEFT);
         view.setVgap(5);

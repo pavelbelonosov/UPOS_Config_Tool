@@ -3,15 +3,18 @@ package com.upostool.domain;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Log {
+public class UPOSlog {
+    private String fullName;
 
-    private List<String> logs=new ArrayList<>();
+    public void setFullName(String module) {
+        fullName = module + getLocatDateTime().charAt(2) + getLocatDateTime().charAt(3) +
+                getLocatDateTime().charAt(5) + getLocatDateTime().charAt(6) + ".log";
+    }
 
-    public void addLog(String record) {
-        logs.add(getLocatDateTime() + record);
+
+    public String getFullName() {
+        return fullName;
     }
 
     private String getLocatDateTime() {
@@ -20,10 +23,6 @@ public class Log {
         return timeStamp;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        logs.stream().forEach(l->sb.append(l+"\n"));
-        return sb.toString();
-    }
+
+
 }

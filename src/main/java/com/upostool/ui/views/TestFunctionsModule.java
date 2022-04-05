@@ -1,7 +1,7 @@
 package com.upostool.ui.views;
 
-import com.upostool.DAO.SettingDAO;
-import com.upostool.util.Constants;
+import com.upostool.domain.*;
+import com.upostool.util.Cons;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Parent;
@@ -18,19 +18,26 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class TestFunctionsModule {
-    //private List<String> loglist;
-    private SettingDAO settingFileDAO;
+
+    private ModuleSbPilotProcess sbPilotProcess;
+    private ModuleLoadParmProcess loadParmProcess;
+    private CMDengineerHandler cmdEngineerHandler;
+    private FileUPOSlogHandler fileUPOSlogHandler;
+    private UPOSlog uposLog;
     private HBox view;
     private String uposDir;
     private String cheque;
     private final int COMPONENT_WIDTH = 100;
 
-    public TestFunctionsModule(SettingDAO sfd, String uposDir) {
-        //this.loglist = log;
+    public TestFunctionsModule(AppLog log, String uposDir) {
         this.view = new HBox();
         this.uposDir = uposDir + "/";
         this.cheque = uposDir + "/p";
-        this.settingFileDAO=sfd;
+        this.loadParmProcess = new ModuleLoadParmProcess(uposDir, log);
+        this.sbPilotProcess = new ModuleSbPilotProcess(uposDir, log);
+        this.cmdEngineerHandler = new CMDengineerHandler(uposDir, log);
+        this.uposLog = new UPOSlog();
+        this.fileUPOSlogHandler = new FileUPOSlogHandler(uposDir, log, uposLog);
         setView();
     }
 
@@ -57,16 +64,25 @@ public class TestFunctionsModule {
         TextField activationCodeTextField = new TextField("Activation code");
         activationCodeTextField.setMaxWidth(COMPONENT_WIDTH);
         functionButtonBox.getChildren().addAll(
-                createFunctionButton(chequeArea, uposLogArea, "MENU", "11", ""),
-                createRemoteLoadButton(activationCodeTextField, uposLogArea),
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.MENU),
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.REMOTE_LOAD),
                 activationCodeTextField,
-                createFunctionButton(chequeArea, uposLogArea, "DEL KEY", "22", ""),
-                createFunctionButton(chequeArea, uposLogArea, "X-REPORT", "9", "1"),
-                createFunctionButton(chequeArea, uposLogArea, "PURCHASE", "1", "100"),
-                createFunctionButton(chequeArea, uposLogArea, "REFUND", "3", "100"),
-                createFunctionButton(chequeArea, uposLogArea, "CLOSE DAY", "7", ""),
-                createFunctionButton(chequeArea, uposLogArea, "TEST PSDB", "47", "2"),
-                createFunctionButton(chequeArea, uposLogArea, "HELP INFO", "36", "")
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.DEL_KEY),
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.XREPORT),
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.PURCHASE),
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.REFUND),
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.CLOSE_DAY),
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.TEST_PSDB),
+                createFunctionButton(chequeArea, uposLogArea, activationCodeTextField,
+                        ModuleLoadParmProcess.Operation.HELP_INFO)
         );
 
         //1.3 Service buttons vbox
@@ -75,16 +91,16 @@ public class TestFunctionsModule {
         TextField pingIpArea = new TextField("192.168.1.50");
         pingIpArea.setMaxWidth(COMPONENT_WIDTH);
         serviceButtonsBox.getChildren().addAll(
-                createActionDllButton("REG DLL", ""),
-                createActionDllButton("UNREG DLL", "/U"),
-                createActionAgentButton("REG AGENT", "/reg"),
-                createActionAgentButton("UNREG AGENT", "/unreg"),
-                createActionAgentButton("RUN AGENT", "/run"),
-                createCmdCommandButton("SERVICES.MSC"),
-                createCmdCommandButton("DEVMGMT.MSC"),
-                createCmdWithStdoutButton("IPCONFIG", "ipconfig", chequeArea, pingIpArea),
+                createCmdButton("REG DLL", CMDengineerHandler.Command.REG_DLL),
+                createCmdButton("UNREG DLL", CMDengineerHandler.Command.UNREG_DLL),
+                createCmdButton(CMDengineerHandler.Command.REG_AGENT, chequeArea, pingIpArea),
+                createCmdButton(CMDengineerHandler.Command.UNREG_AGENT, chequeArea, pingIpArea),
+                createCmdButton("RUN AGENT", CMDengineerHandler.Command.RUN_AGENT),
+                createCmdButton(CMDengineerHandler.Command.SERVICES),
+                createCmdButton(CMDengineerHandler.Command.DEVMGMT),
+                createCmdButton(CMDengineerHandler.Command.IPCONFIG, chequeArea, pingIpArea),
                 createListenPortCheckButton(chequeArea),
-                createCmdWithStdoutButton("PING", "ping", chequeArea, pingIpArea),
+                createCmdButton(CMDengineerHandler.Command.PING, chequeArea, pingIpArea),
                 pingIpArea
         );
 
@@ -105,31 +121,25 @@ public class TestFunctionsModule {
         //3.Styling
         functionButtonBox.setSpacing(5);
         serviceButtonsBox.setSpacing(5);
-        view.setStyle(Constants.BLACK_THEME);
+        view.setStyle(Cons.BLACK_THEME);
         view.setPrefSize(620, 550);
         view.setSpacing(10);
         view.setPadding(new Insets(10, 10, 10, 10));
     }
 
-    private Button createFunctionButton(TextArea chequeArea, TextArea sbkernellArea, String buttonName,
-                                        String loadparmFirstParameter, String loadparmSecondParameter) {
-        Button btn = new Button(buttonName);
+    private Button createFunctionButton(TextArea chequeArea, TextArea sbkernellArea,
+                                        TextField activationCode, ModuleLoadParmProcess.Operation operation) {
+        Button btn = new Button(operation.toString());
         btn.setMinWidth(COMPONENT_WIDTH);
         btn.setOnAction(e -> {
             try {
                 deleteCheque();
-                //loglist.add(getLocatDateTime() + "PROCESSING " + buttonName + "...");
-                function("loadparm.exe", loadparmFirstParameter, loadparmSecondParameter);
-                //loglist.add(getLocatDateTime() + "LOADPARM " + loadparmFirstParameter + " " + loadparmSecondParameter);
-            } catch (Exception ex) {
-                //loglist.add(getLocatDateTime() + ex.getMessage());
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-            try {
-                //loglist.add(getLocatDateTime() + "SB_PILOT " + loadparmFirstParameter + " " + loadparmSecondParameter);
-                function("sb_pilot.exe", loadparmFirstParameter, loadparmSecondParameter);
-            } catch (Exception ex) {
-                //loglist.add(getLocatDateTime() + ex.getMessage());
-            }
+            loadParmProcess.execute(operation, activationCode.getText());
+            sbPilotProcess.execute(operation, activationCode.getText());
+
             loadCheque(chequeArea);
             loadUPOSLog("sbkernel", sbkernellArea);
             loadUPOSLog("upos", sbkernellArea);
@@ -137,91 +147,34 @@ public class TestFunctionsModule {
         return btn;
     }
 
-    private Button createRemoteLoadButton(TextField activationCode, TextArea sbkernellArea) {
-        Button btn = new Button("REMOTE LOAD");
-        btn.setMinWidth(COMPONENT_WIDTH);
-        btn.setOnAction(e -> {
-            try {
-                deleteCheque();
-                this.settingFileDAO.getLog().addLog("PROCESSING REMOTE LOAD...");
-                remoteLoadFunction(activationCode.getText());
-                //loglist.add(getLocatDateTime() + "LOADPARM " + 21 + " " + activationCode.getText());
-            } catch (Exception ex) {
-                //loglist.add(getLocatDateTime() + ex.getMessage());
-            }
-            loadUPOSLog("sbkernel", sbkernellArea);
-            loadUPOSLog("upos", sbkernellArea);
-        });
-        return btn;
-    }
-
-    private void function(String module, String firstParameter, String secondParameter) throws IOException, InterruptedException {
-        Process process;
-        if (secondParameter.equals("")) {
-            process = new ProcessBuilder(uposDir + module, firstParameter).start();
-            process.waitFor();
-            return;
-        }
-        process = new ProcessBuilder(uposDir + module, firstParameter, secondParameter).start();
-        process.waitFor();
-    }
-
-    private void remoteLoadFunction(String activationCode) throws IOException {
-        Process process = new ProcessBuilder(uposDir + "loadparm.exe",
-                "21", activationCode).start();
-
-    }
-
-    private Button createActionDllButton(String name, String arg) {
-        Button b = new Button(name);
+    private Button createCmdButton(CMDengineerHandler.Command command) {
+        Button b = new Button(command.toString());
         b.setMinWidth(COMPONENT_WIDTH);
         b.setOnAction(e -> {
-            actionDLL(arg);
+            cmdEngineerHandler.executeCMD(command, "");
         });
         return b;
     }
 
-    private Button createActionAgentButton(String name, String arg) {
+    private Button createCmdButton(String name, CMDengineerHandler.Command command) {
         Button b = new Button(name);
         b.setMinWidth(COMPONENT_WIDTH);
         b.setOnAction(e -> {
-            actionAgent(arg);
+            cmdEngineerHandler.executeCMD(command, "");
         });
         return b;
     }
 
-    private Button createCmdWithStdoutButton(String name, String command, TextArea chequeArea, TextField ip) {
-        Button b = new Button(name);
+    private Button createCmdButton(CMDengineerHandler.Command command, TextArea chequeArea, TextField ip) {
+        Button b = new Button(command.toString());
         b.setMinWidth(COMPONENT_WIDTH);
         b.setOnAction(e -> {
-            try {
-                //loglist.add(getLocatDateTime() + name + " " + ip.getText() + "...");
-                Process p;
-                switch (command) {
-                    case "ping":
-                        p = new ProcessBuilder("cmd.exe", "/c", command, ip.getText()).start();
-                        break;
-                    case "ipconfig":
-                        p = new ProcessBuilder("cmd.exe", "/c", command).start();
-                        break;
-                    default:
-                        p = new ProcessBuilder("cmd.exe", "/c").start();
-                }
-                BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(p.getInputStream(), "cp866"));
-                StringBuilder commandOutput = new StringBuilder();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    commandOutput.append(line);
-                    commandOutput.append(System.getProperty("line.separator"));
-                }
-                chequeArea.setText(commandOutput.toString());
-            } catch (IOException ex) {
-                //loglist.add(getLocatDateTime() + ex.getMessage());
-            }
+            cmdEngineerHandler.executeCMD(command, ip.getText());
+            chequeArea.setText(cmdEngineerHandler.getStdOut());
         });
         return b;
     }
+
 
     private Button createListenPortCheckButton(TextArea chequeArea) {
         Button b = new Button("CHECK PORTS");
@@ -262,14 +215,6 @@ public class TestFunctionsModule {
         return b;
     }
 
-    private Button createCmdCommandButton(String command) {
-        Button b = new Button(command);
-        b.setMinWidth(COMPONENT_WIDTH);
-        b.setOnAction(e -> {
-            cmdCommand(command);
-        });
-        return b;
-    }
 
     private boolean isPortAvailable(String host, int port) {
         try (Socket s = new Socket(host, port)) {
@@ -277,39 +222,6 @@ public class TestFunctionsModule {
         } catch (IOException ex) {
             //loglist.add(getLocatDateTime() + ex.getMessage());
             return false;
-        }
-    }
-
-    private void actionDLL(String unreg) {
-        try {
-            //loglist.add(getLocatDateTime() + "TRYING REGISTER SBRF.DLL&SBRFCOM.DLL...");
-            if (unreg == "") {
-                Process p = new ProcessBuilder("cmd.exe", "/c", "regsvr32.exe",
-                        uposDir + "sbrf.dll", uposDir + "sbrfcom.dll").start();
-            } else {
-                //loglist.add(getLocatDateTime() + "TRYING UNREGISTER SBRF.DLL&SBRFCOM.DLL...");
-                Process p = new ProcessBuilder("cmd.exe", "/c", "regsvr32.exe", unreg,
-                        uposDir + "sbrf.dll", uposDir + "sbrfcom.dll").start();
-            }
-        } catch (IOException e) {
-           // loglist.add(getLocatDateTime() + e.getMessage());
-        }
-    }
-
-    private void actionAgent(String argument) {
-        try {
-            Process p = new ProcessBuilder(uposDir + "agent.exe", argument).start();
-        } catch (IOException e) {
-            //loglist.add(getLocatDateTime() + e.getMessage());
-        }
-    }
-
-    private void cmdCommand(String command) {
-        try {
-            //loglist.add(getLocatDateTime() + "EXECUTING CMD COMMAND " + command + "...");
-            Process p = new ProcessBuilder("cmd.exe", "/c", command).start();
-        } catch (IOException e) {
-           // loglist.add(getLocatDateTime() + e.getMessage());
         }
     }
 
@@ -324,7 +236,7 @@ public class TestFunctionsModule {
                     fin.read(buffer, 0, fin.available());
                     chequeArea.setText(new String(buffer, "cp866"));
                 } catch (Exception ex) {
-                   // loglist.add(getLocatDateTime() + ex.getMessage());
+                    // loglist.add(getLocatDateTime() + ex.getMessage());
                 }
             }
         }
@@ -332,21 +244,10 @@ public class TestFunctionsModule {
     }
 
     private void loadUPOSLog(String log, TextArea uposLogArea) {
-        String sbkernellLog = uposDir + "/" + log +
-                getLocatDateTime().charAt(2) + getLocatDateTime().charAt(3) +
-                getLocatDateTime().charAt(5) + getLocatDateTime().charAt(6) + ".log";
         view.setDisable(true);
-        try {
-            StringBuilder logContent = new StringBuilder();
-            Files.lines(Paths.get(sbkernellLog))
-                    .forEach(line -> {
-                        logContent.append(line + "\n");
-                    });
-            uposLogArea.setText(logContent.toString());
-        } catch (IOException e) {
-           // loglist.add(getLocatDateTime() + e.getMessage() + " NOT FOUND");
-        }
-        uposLogArea.appendText("");
+        uposLog.setFullName(log);
+        uposLogArea.setText(fileUPOSlogHandler.getContent());
+        //uposLogArea.appendText("");
         view.setDisable(false);
     }
 

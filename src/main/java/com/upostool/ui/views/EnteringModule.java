@@ -1,7 +1,7 @@
 package com.upostool.ui.views;
 
 
-import com.upostool.util.Constants;
+import com.upostool.util.Cons;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -36,10 +36,10 @@ public class EnteringModule {
 
         view.add(login, 0, 0);
         view.add(passwordField, 0, 1);
-        view.add(new ImageView(Constants.LOGO_TRANSPARENT), 0, 3);
+        view.add(new ImageView(Cons.LOGO_TRANSPARENT), 0, 3);
 
         //view.setStyle("-fx-background-color: #FFFFFF;");
-        view.setStyle(Constants.BLACK_THEME);
+        view.setStyle(Cons.BLACK_THEME);
         view.setAlignment(Pos.CENTER);
         view.setVgap(10);
         view.setHgap(10);
@@ -60,7 +60,7 @@ public class EnteringModule {
         Scene scene = new Scene(pane);
         Stage newStage = new Stage();
         newStage.setTitle(title);
-        newStage.getIcons().add(Constants.ATM_ICON_MAIN);
+        newStage.getIcons().add(Cons.ATM_ICON_MAIN);
         newStage.setMaxWidth(700);
         newStage.setMaxHeight(700);
 

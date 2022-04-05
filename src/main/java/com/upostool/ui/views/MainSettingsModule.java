@@ -1,8 +1,8 @@
 package com.upostool.ui.views;
 
-import com.upostool.DAO.SettingDAO;
+import com.upostool.DAO.FileSettingDAO;
 import com.upostool.domain.Setting;
-import com.upostool.service.FileZip;
+import com.upostool.domain.FileZip;
 import com.upostool.util.*;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -20,11 +20,11 @@ import java.util.*;
 
 public class MainSettingsModule {
     private GridPane view;
-    private SettingDAO settingDAO;
+    private FileSettingDAO settingDAO;
 
     public MainSettingsModule() {
         this.view = new GridPane();
-        this.settingDAO = new SettingDAO();
+        this.settingDAO = new FileSettingDAO();
         setView();
     }
 
@@ -35,7 +35,7 @@ public class MainSettingsModule {
         Label uposExtractError = new Label("STATUS");
         uposExtractError.setDisable(true);
         uposExtractError.setTextFill(Color.TRANSPARENT);
-        ChoiceBox uposItems = createBoundChoiceBox(Constants.UPOS_VERSIONS);
+        ChoiceBox uposItems = createBoundChoiceBox(Cons.UPOS_VERSIONS);
         view.add(version, 0, 0);
         view.add(uposExtractError, 1, 0);
         view.add(uposItems, 2, 0);
@@ -45,7 +45,7 @@ public class MainSettingsModule {
         Label driverExtractError = new Label("STATUS");
         driverExtractError.setDisable(true);
         driverExtractError.setTextFill(Color.TRANSPARENT);
-        ChoiceBox driverItems = createBoundChoiceBox(Constants.DRIVERS_VERSIONS);
+        ChoiceBox driverItems = createBoundChoiceBox(Cons.DRIVERS_VERSIONS);
 
         view.add(driverVersion, 0, 1);
         view.add(driverExtractError, 1, 1);
@@ -122,9 +122,9 @@ public class MainSettingsModule {
         view.add(createTestFunctionsButton(toWhereUnzip), 2, 9);
 
         //13.Styling layout
-        view.setStyle(Constants.BLACK_THEME);
+        view.setStyle(Cons.BLACK_THEME);
         view.setPrefSize(400, 350);
-        view.add(new ImageView(Constants.LOGO_TRANSPARENT), 1, 10);
+        view.add(new ImageView(Cons.LOGO_TRANSPARENT), 1, 10);
         view.setAlignment(Pos.CENTER);
         view.setVgap(10);
         view.setHgap(10);
@@ -143,7 +143,7 @@ public class MainSettingsModule {
 
     private ChoiceBox createChoiceBoxWithConnections(ChoiceBox portNumber, Label ethAdr,
                                                      TextField pinpadIpAddress) {
-        ChoiceBox box = createBoundChoiceBox(Constants.PINPAD_CONNECTIONS);
+        ChoiceBox box = createBoundChoiceBox(Cons.PINPAD_CONNECTIONS);
         box.setOnAction((e) -> {
             if (box.getSelectionModel().getSelectedIndex() == 0) {
                 portNumber.setDisable(false);
@@ -173,7 +173,7 @@ public class MainSettingsModule {
     }
 
     private ChoiceBox createPortNumberChoiceBox() {
-        ChoiceBox cb = createBoundChoiceBox(Constants.COMPORTS);
+        ChoiceBox cb = createBoundChoiceBox(Cons.COMPORTS);
         cb.setOnAction((e) -> {
             String setting = "ComPort";
             String bundledSetting = "Speed";
@@ -201,7 +201,7 @@ public class MainSettingsModule {
     }
 
     private ChoiceBox createPrinterEndChoiceBox() {
-        ChoiceBox cb = createBoundChoiceBox(Constants.PRINTEREND_VALUES);
+        ChoiceBox cb = createBoundChoiceBox(Cons.PRINTEREND_VALUES);
         cb.setOnAction(e -> {
             String settingName = "PrinterEnd";
             String value = cb.getSelectionModel().getSelectedItem().toString();
@@ -216,23 +216,23 @@ public class MainSettingsModule {
         btn.setOnAction((e) -> {
             if (uposItems.getSelectionModel().getSelectedItem() != null) {
                 try {
-                    this.settingDAO.getLog().addLog("EXTRACTING UPOS...");
+                    this.settingDAO.getLog().addRecord("EXTRACTING UPOS...");
                     new FileZip(toWhereUnzip.getText(),
                             uposItems.getSelectionModel().
                                     getSelectedItem().toString() + ".zip").copyZip();
                 } catch (IOException ex) {
-                    this.settingDAO.getLog().addLog(ex.getMessage());
+                    this.settingDAO.getLog().addRecord(ex.getMessage());
                     uposExtractError.setDisable(false);
                 }
             }
             if (driverItems.getSelectionModel().getSelectedItem() != null) {
                 try {
-                    this.settingDAO.getLog().addLog("EXTRACTING DRIVER...");
+                    this.settingDAO.getLog().addRecord("EXTRACTING DRIVER...");
                     new FileZip(toWhereUnzip.getText(),
                             driverItems.getSelectionModel().
                                     getSelectedItem().toString() + ".zip").copyZip();
                 } catch (IOException ex) {
-                    this.settingDAO.getLog().addLog(ex.getMessage());
+                    this.settingDAO.getLog().addRecord(ex.getMessage());
                     driverExtractError.setDisable(false);
                 }
             }
@@ -286,7 +286,7 @@ public class MainSettingsModule {
         Button btn = new Button("FUNCTIONS");
         btn.setOnAction(e -> {
             EnteringModule.openStage("UPOS TEST",
-                    new TestFunctionsModule(this.settingDAO, toWhereUnzip.getText()).getView());
+                    new TestFunctionsModule(this.settingDAO.getLog(), toWhereUnzip.getText()).getView());
         });
         return btn;
     }

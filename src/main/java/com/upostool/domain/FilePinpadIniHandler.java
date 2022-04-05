@@ -1,21 +1,20 @@
-package com.upostool.service;
-
-import com.upostool.domain.Setting;
+package com.upostool.domain;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class PinpadIniHandler extends FileHandler {
+public class FilePinpadIniHandler extends FileHandler {
     private List<Setting> settings;
 
-    public PinpadIniHandler(List settings) {
+    public FilePinpadIniHandler(List settings) {
         setFile("pinpad.ini");
         this.settings = settings;
     }
 
     @Override
-    public List readFile() throws Exception {
+    public List readFile() throws IOException {
         super.readFile().stream().forEach(line -> {
             String[] parts = line.split("=");
             this.settings.add(new Setting(parts[0], parts[1]));

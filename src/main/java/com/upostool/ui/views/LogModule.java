@@ -1,7 +1,7 @@
 package com.upostool.ui.views;
 
-import com.upostool.domain.Log;
-import com.upostool.util.Constants;
+import com.upostool.domain.AppLog;
+import com.upostool.util.Cons;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -10,13 +10,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.util.List;
-
 public class LogModule {
     private GridPane view;
-    private Log log;
+    private AppLog log;
 
-    public LogModule(Log log) {
+    public LogModule(AppLog log) {
         this.view = new GridPane();
         this.log = log;
         setView();
@@ -29,10 +27,10 @@ public class LogModule {
         view.add(thisAppVersion, 0, 0);
         view.add(contact, 0, 1);
         view.add(createLogTextArea(), 0, 3);
-        view.add(new ImageView(Constants.LOGO_TRANSPARENT), 0, 4);
+        view.add(new ImageView(Cons.LOGO_TRANSPARENT), 0, 4);
 
         //Styling
-        view.setStyle(Constants.BLACK_THEME);
+        view.setStyle(Cons.BLACK_THEME);
         view.setPrefSize(400, 420);
         view.setAlignment(Pos.TOP_CENTER);
         view.setVgap(10);

@@ -3,7 +3,7 @@ package com.upostool.util;
 import com.upostool.MainApplication;
 import javafx.scene.image.Image;
 
-public class Constants {
+public class Cons {
     //Styling
     public static final Image BUTTON_ICON_30x30 = new Image(MainApplication.class
             .getResourceAsStream("icon_button30x30.png"));
