@@ -247,7 +247,8 @@ public class TestFunctionsModule {
         view.setDisable(true);
         uposLog.setFullName(log);
         uposLogArea.setText(fileUPOSlogHandler.getContent());
-        //uposLogArea.appendText("");
+        uposLogArea.appendText("\n**************ERRORS***************\n");
+        uposLogArea.appendText(fileUPOSlogHandler.findErrors());
         view.setDisable(false);
     }
 
@@ -265,12 +266,6 @@ public class TestFunctionsModule {
         Separator hSeparator = new Separator(Orientation.HORIZONTAL);
         hSeparator.setPrefHeight(10);
         return hSeparator;
-    }
-
-    private String getLocatDateTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
-        String timeStamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(dtf) + ":  ";
-        return timeStamp;
     }
 
     Parent getView() {

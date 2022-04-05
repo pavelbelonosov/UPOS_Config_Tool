@@ -6,6 +6,7 @@ public class FileUPOSlogHandler extends FileHandler {
     private UPOSlog uposLog;
     private AppLog appLog;
     private String content;
+    private String errors;
 
     public FileUPOSlogHandler(String dir, AppLog appLog, UPOSlog uposLog) {
         this.uposLog = uposLog;
@@ -18,24 +19,25 @@ public class FileUPOSlogHandler extends FileHandler {
         StringBuilder sb = new StringBuilder();
         try {
             readFile().stream().forEach(line->sb.append(line+"\n"));
+            content=sb.toString();
         } catch (IOException e) {
             appLog.addRecord(e.getMessage());
         }
-
-        content=sb.toString();
         return content;
     }
 
     public String findErrors() {
-        StringBuilder sb = new StringBuilder();
+        setFile(this.uposLog.getFullName());
+        StringBuilder sb=new StringBuilder();
         try {
             appLog.addRecord("FINDING PINPAD ERRORS...");
             readFile().stream().filter(s -> s.contains("Result"))
-                    .filter(ss -> !ss.contains("=0") || !ss.contains("=4354"))
+                    .filter(ss -> !ss.contains("= 0") || !ss.contains("= 4354"))
                     .forEach(l -> sb.append(l + "\n"));
+            errors=sb.toString();
         } catch (IOException e) {
-            appLog.addRecord(e.getMessage());
+            appLog.addRecord("NOT FOUND "+e.getMessage());
         }
-        return sb.toString();
+        return errors;
     }
 }
