@@ -12,7 +12,6 @@ public class UPOSlog {
                 getLocatDateTime().charAt(5) + getLocatDateTime().charAt(6) + ".log";
     }
 
-
     public String getFullName() {
         return fullName;
     }

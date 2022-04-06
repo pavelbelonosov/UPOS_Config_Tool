@@ -14,29 +14,30 @@ public class FileUPOSlogHandler extends FileHandler {
         setDir(dir);
     }
 
-    public String getContent(){
+    public String getContent() {
         setFile(this.uposLog.getFullName());
         StringBuilder sb = new StringBuilder();
         try {
-            readFile().stream().forEach(line->sb.append(line+"\n"));
-            content=sb.toString();
+            readFile().stream().forEach(line -> sb.append(line + "\n"));
+            appLog.addRecord("READING "+this.uposLog.getFullName()+" ...");
+            content = sb.toString();
         } catch (IOException e) {
-            appLog.addRecord(e.getMessage());
+            appLog.addRecord("NOT FOUND " + e.getMessage());
         }
         return content;
     }
 
     public String findErrors() {
         setFile(this.uposLog.getFullName());
-        StringBuilder sb=new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         try {
-            appLog.addRecord("FINDING PINPAD ERRORS...");
             readFile().stream().filter(s -> s.contains("Result"))
                     .filter(ss -> !ss.contains("= 0") || !ss.contains("= 4354"))
                     .forEach(l -> sb.append(l + "\n"));
-            errors=sb.toString();
+            appLog.addRecord("FINDING PINPAD ERRORS...");
+            errors = sb.toString();
         } catch (IOException e) {
-            appLog.addRecord("NOT FOUND "+e.getMessage());
+            appLog.addRecord("NOT FOUND " + e.getMessage());
         }
         return errors;
     }

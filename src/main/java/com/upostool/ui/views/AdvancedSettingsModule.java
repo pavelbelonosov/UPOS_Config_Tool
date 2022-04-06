@@ -1,6 +1,7 @@
 package com.upostool.ui.views;
 
 import com.upostool.DAO.FileSettingDAO;
+import com.upostool.DAO.SettingDAO;
 import com.upostool.domain.Setting;
 import com.upostool.util.Cons;
 import com.upostool.util.SETTINGS_VALUES_EXPLANATIONS;
@@ -13,13 +14,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import java.util.Arrays;
 
+
 public class AdvancedSettingsModule {
     private GridPane view;
-    private FileSettingDAO settingFileDAO;
+    private SettingDAO settingDAO;
 
-    public AdvancedSettingsModule(FileSettingDAO sfd) {
+    public AdvancedSettingsModule(SettingDAO sd) {
         this.view = new GridPane();
-        this.settingFileDAO = sfd;
+        this.settingDAO = sd;
         setView();
     }
 
@@ -297,9 +299,9 @@ public class AdvancedSettingsModule {
         cb.selectedProperty().addListener((change, oldValue, newValue) -> {
             String value = choiceBox.getSelectionModel().getSelectedItem().toString();
             if (newValue) {
-                this.settingFileDAO.update(new Setting(settingName, value));
+                this.settingDAO.update(new Setting(settingName, value));
             } else {
-                this.settingFileDAO.removeByName(settingName);
+                this.settingDAO.removeByName(settingName);
             }
         });
         return cb;
@@ -310,9 +312,9 @@ public class AdvancedSettingsModule {
         cb.selectedProperty().addListener((change, oldValue, newValue) -> {
             String value = field.getText();
             if (newValue) {
-                this.settingFileDAO.update(new Setting(settingName,value));
+                this.settingDAO.update(new Setting(settingName,value));
             } else {
-                this.settingFileDAO.removeByName(settingName);
+                this.settingDAO.removeByName(settingName);
             }
         });
         return cb;
@@ -322,9 +324,9 @@ public class AdvancedSettingsModule {
         CheckBox cb = new CheckBox();
         cb.selectedProperty().addListener((change, oldValue, newValue) -> {
             if (newValue) {
-                this.settingFileDAO.update(new Setting(settingName, "1"));
+                this.settingDAO.update(new Setting(settingName, "1"));
             } else {
-                this.settingFileDAO.update(new Setting(settingName, "0"));
+                this.settingDAO.update(new Setting(settingName, "0"));
             }
         });
         return cb;

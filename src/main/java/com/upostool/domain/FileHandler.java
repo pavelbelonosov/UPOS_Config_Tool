@@ -19,6 +19,11 @@ public class FileHandler {
         return content;
     }
 
+    public Boolean isExist(){
+        File file = new File(this.dir + "/" + this.file);
+        return file.exists();
+    }
+
     public void deleteFile() {
         File file = new File(this.dir + "/" + this.file);
         if (!file.exists()) {
@@ -27,14 +32,9 @@ public class FileHandler {
         file.delete();
     }
 
-    public Boolean isExist(){
-        File file = new File(this.dir + "/" + this.file);
-        return file.exists();
-    }
-
     public void setDir(String dir) throws IllegalArgumentException {
         if (dir == null||dir.equals("")) {
-            throw new  IllegalArgumentException("No directory!");
+            throw new  IllegalArgumentException("No directory provided!");
         } else {
             this.dir = dir;
         }
@@ -42,7 +42,7 @@ public class FileHandler {
 
     public void setFile(String file) throws IllegalArgumentException {
         if (file == null||file.equals("")) {
-            throw new IllegalArgumentException("No file!");
+            throw new IllegalArgumentException("No file provided!");
         } else {
             this.file = file;
         }

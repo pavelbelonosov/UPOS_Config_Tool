@@ -1,5 +1,7 @@
 package com.upostool.domain;
-
+//*******************************
+//future entity for JPArepository?
+//*******************************
 public class Cheque {
     private String type;
     private int terminalID;

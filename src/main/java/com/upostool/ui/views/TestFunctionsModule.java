@@ -24,6 +24,8 @@ public class TestFunctionsModule {
     private CMDengineerHandler cmdEngineerHandler;
     private FileUPOSlogHandler fileUPOSlogHandler;
     private UPOSlog uposLog;
+    private SocketHandler socketHandler;
+    private FileChequeHandler fileChequeHandler;
     private HBox view;
     private String uposDir;
     private String cheque;
@@ -38,6 +40,8 @@ public class TestFunctionsModule {
         this.cmdEngineerHandler = new CMDengineerHandler(uposDir, log);
         this.uposLog = new UPOSlog();
         this.fileUPOSlogHandler = new FileUPOSlogHandler(uposDir, log, uposLog);
+        this.socketHandler = new SocketHandler(log);
+        this.fileChequeHandler = new FileChequeHandler(uposDir, log);
         setView();
     }
 
@@ -132,17 +136,14 @@ public class TestFunctionsModule {
         Button btn = new Button(operation.toString());
         btn.setMinWidth(COMPONENT_WIDTH);
         btn.setOnAction(e -> {
-            try {
-                deleteCheque();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            fileChequeHandler.deleteFile();
+            view.setDisable(true);
             loadParmProcess.execute(operation, activationCode.getText());
             sbPilotProcess.execute(operation, activationCode.getText());
-
-            loadCheque(chequeArea);
+            chequeArea.appendText(fileChequeHandler.getContent());
             loadUPOSLog("sbkernel", sbkernellArea);
             loadUPOSLog("upos", sbkernellArea);
+            view.setDisable(false);
         });
         return btn;
     }
@@ -180,49 +181,9 @@ public class TestFunctionsModule {
         Button b = new Button("CHECK PORTS");
         b.setMinWidth(COMPONENT_WIDTH);
         b.setOnAction(e -> {
-            StringBuilder builder = new StringBuilder();
-            String mainServer = "194.54.14.89";
-            String agentServer = "185.157.96.41";
-            if (isPortAvailable(mainServer, 650)) {
-                builder.append(mainServer + " ON 650 AVAILABLE\n");
-            } else {
-                builder.append(mainServer + " ON 650 NOT AVAILABLE\n");
-            }
-            if (isPortAvailable(mainServer, 666)) {
-                builder.append(mainServer + " ON 666 AVAILABLE\n");
-            } else {
-                builder.append(mainServer + " ON 666 NOT AVAILABLE\n");
-            }
-            if (isPortAvailable(mainServer, 670)) {
-                builder.append(mainServer + " ON 670 AVAILABLE\n");
-            } else {
-                builder.append(mainServer + " ON 670 NOT AVAILABLE\n");
-            }
-            if (isPortAvailable(mainServer, 690)) {
-                builder.append(mainServer + " ON 690 AVAILABLE\n");
-            } else {
-                builder.append(mainServer + " ON 690 NOT AVAILABLE\n");
-            }
-            if (isPortAvailable(agentServer, 80)) {
-                builder.append("\nAGENT\n"
-                        + agentServer + " ON 80 AVAILABLE");
-            } else {
-                builder.append("AGENT\n"
-                        + agentServer + " ON 80 NOT AVAILABLE");
-            }
-            chequeArea.setText(builder.toString());
+            chequeArea.setText(socketHandler.checkPortsInfo());
         });
         return b;
-    }
-
-
-    private boolean isPortAvailable(String host, int port) {
-        try (Socket s = new Socket(host, port)) {
-            return true;
-        } catch (IOException ex) {
-            //loglist.add(getLocatDateTime() + ex.getMessage());
-            return false;
-        }
     }
 
     private void loadCheque(TextArea chequeArea) {
@@ -244,22 +205,10 @@ public class TestFunctionsModule {
     }
 
     private void loadUPOSLog(String log, TextArea uposLogArea) {
-        view.setDisable(true);
         uposLog.setFullName(log);
         uposLogArea.setText(fileUPOSlogHandler.getContent());
         uposLogArea.appendText("\n**************ERRORS***************\n");
         uposLogArea.appendText(fileUPOSlogHandler.findErrors());
-        view.setDisable(false);
-    }
-
-    private void deleteCheque() throws IOException {
-        if (Files.exists(Paths.get(cheque))) {
-            Files.delete(Paths.get(cheque));
-            if (!Files.exists(Paths.get(cheque))) {
-                //loglist.add(getLocatDateTime() + "FILE P DELETED... ");
-            }
-        }
-
     }
 
     private Separator createHorizSeparator() {
