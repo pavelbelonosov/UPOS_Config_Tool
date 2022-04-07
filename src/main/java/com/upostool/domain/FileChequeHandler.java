@@ -23,8 +23,8 @@ public class FileChequeHandler extends FileHandler {
     public List readFile() {
         String content = "";
         long startTime = System.currentTimeMillis();
-        long timeWait = startTime + 2000;
-        while (timeWait >= System.currentTimeMillis()) {
+        long endTime = startTime + 2000L;
+        while (endTime >= System.currentTimeMillis()) {
             if (isExist()) {
                 log.addRecord("READING CHEQUE...");
                 try (FileInputStream fis = new FileInputStream(getDir() + "/" + getFile())) {

@@ -1,9 +1,8 @@
 import com.upostool.domain.Setting;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class SettingTest {
@@ -12,20 +11,22 @@ public class SettingTest {
 
     @Before
     public void setUp() {
-         s1=new Setting("ComPort","1");
-         s2 = new Setting("ComPort","1");
+        s1 = new Setting("ComPort", "1");
+        s2 = new Setting("ComPort", "1");
     }
 
     @After
     public void tearDown() {
     }
+
     @Test
     public void constructorSetNameAndValueRight() {
-        assertEquals("ComPort=1",s1.toString());
+        assertEquals("ComPort=1", s1.toString());
     }
+
     @Test
-    public void equalsMethodReturnRight(){
-        assertEquals(true,s1.equals(s2));
+    public void testEqualsMethod() {
+        assertEquals(true, s1.equals(s2));
     }
 }
 

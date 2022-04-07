@@ -17,9 +17,10 @@ public class CMDcommand {
         }
     }
 
-    public void setArg(String arg){
-        this.args=new String[]{arg};
+    public void setArg(String arg) {
+        this.args = new String[]{arg};
     }
+
     public void setArgs(String[] args) {
         this.args = args;
     }
@@ -30,7 +31,7 @@ public class CMDcommand {
         base.add("/c");
         if (process == null) {
             return base;
-        } else if (process != null && (args == null||args[0]=="")) {
+        } else if (process != null && (args == null || args[0] == "")) {
             base.add(process);
             cmd = base;
         } else if (process != null && args != null) {
