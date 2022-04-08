@@ -1,6 +1,9 @@
 package com.upostool.domain;
 
+import com.upostool.util.Cons;
+
 import java.io.*;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -8,18 +11,24 @@ import java.util.zip.ZipFile;
 public class FileZip {
     private String destDir;
     private String fileZip;
+    private AppLog log;
 
-    public FileZip(String destinationFolder, String fileZip) {
+    public FileZip(String destinationFolder, String fileZip, AppLog log) {
+        this.log = log;
         if (destinationFolder == null || destinationFolder.equals("")) {
             this.destDir = "C:/sberbank/";
-        }else {
-            this.destDir = destinationFolder;
+        } else {
+            this.destDir = destinationFolder + "/";
         }
-            this.fileZip = fileZip;
+        this.fileZip = fileZip;
     }
 
     public void copyZip() throws IOException {
+        if(!verifyProvidedZipName()){
+            return;
+        }
         createDirOnSystem();
+        log.addRecord(destDir + fileZip);
         try (InputStream is = getClass().getResource("/com/upostool/" + fileZip).openStream();
              OutputStream os = new FileOutputStream(destDir + fileZip)) {
             byte[] b = new byte[2048];
@@ -32,13 +41,28 @@ public class FileZip {
         deleteZip();
     }
 
+    private Boolean verifyProvidedZipName() {
+        if (fileZip == null) {
+            return false;
+        } else if (Arrays.stream(Cons.UPOS_VERSIONS)
+                .filter(s -> s != null)
+                .map(s -> s + ".zip")
+                .anyMatch(s -> s.equals(fileZip))
+                || Arrays.stream(Cons.DRIVERS_VERSIONS)
+                .filter(s -> s != null)
+                .map(s -> s + ".zip")
+                .anyMatch(s -> s.equals(fileZip))) {
+            return true;
+        }
+        return false;
+    }
+
     private void createDirOnSystem() {
         File destination = new File(destDir);
         if (destination.exists()) {
             return;
-        } else {
-            destination.mkdirs();
         }
+        destination.mkdirs();
     }
 
     private void unZipFile() throws IOException {

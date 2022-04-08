@@ -6,7 +6,10 @@ public abstract class ModuleProcess {
 
     public Boolean makeOperation() {
         try {
-            if (secondParam.equals("")) {
+            if (secondParam.equals("")&&firstParam.equals("21")) {
+                return false;
+            }
+            if(secondParam.equals("")){
                 process = new ProcessBuilder(dir + module, firstParam).start();
             } else {
                 process = new ProcessBuilder(dir + module, firstParam, secondParam).start();
@@ -23,7 +26,7 @@ public abstract class ModuleProcess {
     }
 
     public void setDir(String dir) {
-        this.dir = dir;
+        this.dir = dir+"/";
     }
 
     public String getModule() {

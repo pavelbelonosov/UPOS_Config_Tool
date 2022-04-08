@@ -220,7 +220,7 @@ public class MainSettingsModule {
                     settingDAO.getLog().addRecord("EXTRACTING UPOS...");
                     new FileZip(toWhereUnzip.getText(),
                             uposItems.getSelectionModel().
-                                    getSelectedItem().toString() + ".zip").copyZip();
+                                    getSelectedItem().toString() + ".zip", settingDAO.getLog()).copyZip();
                 } catch (IOException ex) {
                     settingDAO.getLog().addRecord(ex.getMessage());
                     uposExtractError.setDisable(false);
@@ -231,7 +231,7 @@ public class MainSettingsModule {
                     settingDAO.getLog().addRecord("EXTRACTING DRIVER...");
                     new FileZip(toWhereUnzip.getText(),
                             driverItems.getSelectionModel().
-                                    getSelectedItem().toString() + ".zip").copyZip();
+                                    getSelectedItem().toString() + ".zip", settingDAO.getLog()).copyZip();
                 } catch (IOException ex) {
                     settingDAO.getLog().addRecord(ex.getMessage());
                     driverExtractError.setDisable(false);
