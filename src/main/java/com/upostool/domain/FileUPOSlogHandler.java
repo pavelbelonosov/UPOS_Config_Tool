@@ -32,7 +32,7 @@ public class FileUPOSlogHandler extends FileHandler {
         StringBuilder sb = new StringBuilder();
         try {
             readFile().stream().filter(s -> s.contains("Result"))
-                    .filter(ss -> !ss.contains("= 0") || !ss.contains("= 4354"))
+                    .filter(ss -> !ss.contains("= 0") && !ss.contains("= 4353"))
                     .forEach(l -> sb.append(l + "\n"));
             appLog.addRecord("FINDING PINPAD ERRORS...");
             errors = sb.toString();
