@@ -24,8 +24,8 @@ public class FileZipTest {
 
     @Before
     public void setUp() throws IOException {
-        uposZip = Cons.UPOS_VERSIONS[new Random().nextInt(8)+1] + ".zip";
-        driverZip = Cons.DRIVERS_VERSIONS[new Random().nextInt(2)+1] + ".zip";
+        uposZip = Cons.UPOS_VERSIONS[new Random().nextInt(Cons.UPOS_VERSIONS.length-1)+1] + ".zip";
+        driverZip = Cons.DRIVERS_VERSIONS[new Random().nextInt(Cons.DRIVERS_VERSIONS.length-1)+1] + ".zip";
         appLogMock = Mockito.mock(AppLog.class);
         subFolder = folder.newFolder("sc552");
     }

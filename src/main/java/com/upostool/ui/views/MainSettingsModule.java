@@ -1,5 +1,6 @@
 package com.upostool.ui.views;
 
+import com.upostool.DAO.ChequeDAO;
 import com.upostool.DAO.FileSettingDAO;
 import com.upostool.DAO.SettingDAO;
 import com.upostool.domain.Setting;
@@ -22,10 +23,12 @@ import java.util.*;
 public class MainSettingsModule {
     private GridPane view;
     private SettingDAO settingDAO;
+    private ChequeDAO chequeDAO;
 
-    public MainSettingsModule() {
+    public MainSettingsModule(SettingDAO settingDAO, ChequeDAO chequeDAO) {
         this.view = new GridPane();
-        this.settingDAO = new FileSettingDAO();
+        this.settingDAO = settingDAO;
+        this.chequeDAO = chequeDAO;
         setView();
     }
 
@@ -287,7 +290,7 @@ public class MainSettingsModule {
         Button btn = new Button("FUNCTIONS");
         btn.setOnAction(e -> {
             EnteringModule.openStage("UPOS TEST",
-                    new TestFunctionsModule(settingDAO.getLog(), toWhereUnzip.getText()).getView());
+                    new TestFunctionsModule(settingDAO.getLog(), toWhereUnzip.getText(), chequeDAO).getView());
         });
         return btn;
     }

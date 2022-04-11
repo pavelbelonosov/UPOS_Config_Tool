@@ -1,6 +1,7 @@
 package com.upostool.ui.views;
 
-
+import com.upostool.DAO.ChequeDAO;
+import com.upostool.DAO.SettingDAO;
 import com.upostool.util.Cons;
 
 import javafx.geometry.Insets;
@@ -12,21 +13,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
 import java.util.Locale;
 
 public class EnteringModule {
 
     private GridPane view;
     private Stage stage; //primaryStage
+    private SettingDAO settingDAO;
+    private ChequeDAO chequeDAO;
 
-    public EnteringModule(Stage stage) {
+    public EnteringModule(Stage stage, SettingDAO settingDAO, ChequeDAO chequeDAO) {
         this.view = new GridPane();
         this.stage = stage;
+        this.settingDAO = settingDAO;
+        this.chequeDAO = chequeDAO;
         this.setView();
     }
 
     private void setView() {
-
         // Image image = new Image(MainApplication.class.getResourceAsStream("logo_transparent.png"));
         TextField login = new TextField("login");
         PasswordField passwordField = new PasswordField();
@@ -35,8 +40,6 @@ public class EnteringModule {
         view.add(login, 0, 0);
         view.add(passwordField, 0, 1);
         view.add(new ImageView(Cons.LOGO_TRANSPARENT), 0, 3);
-
-        //view.setStyle("-fx-background-color: #FFFFFF;");
         view.setStyle(Cons.BLACK_THEME);
         view.setAlignment(Pos.CENTER);
         view.setVgap(10);
@@ -45,15 +48,14 @@ public class EnteringModule {
 
         passwordField.textProperty().addListener((change, oldValue, newValue) -> {
             String input = login.getText().toLowerCase(Locale.ROOT).trim();
-
             if (input.matches("atm") & newValue.equals("166831")) {
                 this.stage.close();
-                openStage("UPOS SETTINGS", new MainSettingsModule().getView());
+                openStage("UPOS SETTINGS", new MainSettingsModule(settingDAO, chequeDAO).getView());
 
             }
         });
-
     }
+
     static void openStage(String title, Parent pane) {
         Scene scene = new Scene(pane);
         Stage newStage = new Stage();
@@ -61,12 +63,9 @@ public class EnteringModule {
         newStage.getIcons().add(Cons.ATM_ICON_MAIN);
         newStage.setMaxWidth(700);
         newStage.setMaxHeight(700);
-
         newStage.setScene(scene);
         newStage.show();
     }
-
-
 
     public Parent getView() {
         return view;

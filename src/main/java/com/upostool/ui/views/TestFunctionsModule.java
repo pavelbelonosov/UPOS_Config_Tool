@@ -1,5 +1,7 @@
 package com.upostool.ui.views;
 
+import com.upostool.DAO.ChequeDAO;
+import com.upostool.DAO.FileChequeDAO;
 import com.upostool.domain.*;
 import com.upostool.util.Cons;
 import javafx.geometry.Insets;
@@ -9,14 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.*;
-import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-
 public class TestFunctionsModule {
 
     private ModuleSbPilotProcess sbPilotProcess;
@@ -25,23 +19,21 @@ public class TestFunctionsModule {
     private FileUPOSlogHandler fileUPOSlogHandler;
     private UPOSlog uposLog;
     private SocketHandler socketHandler;
-    private FileChequeHandler fileChequeHandler;
-    private HBox view;
+    private ChequeDAO chequeDAO;
     private String uposDir;
-    private String cheque;
+    private HBox view;
     private final int COMPONENT_WIDTH = 100;
 
-    public TestFunctionsModule(AppLog log, String uposDir) {
+    public TestFunctionsModule(AppLog log, String uposDir, ChequeDAO chequeDAO) {
         this.view = new HBox();
-        this.uposDir = uposDir + "/";
-        this.cheque = uposDir + "/p";
+        this.uposDir = uposDir;
         this.loadParmProcess = new ModuleLoadParmProcess(uposDir, log);
         this.sbPilotProcess = new ModuleSbPilotProcess(uposDir, log);
         this.cmdEngineerHandler = new CMDengineerHandler(uposDir, log);
         this.uposLog = new UPOSlog();
         this.fileUPOSlogHandler = new FileUPOSlogHandler(uposDir, log, uposLog);
         this.socketHandler = new SocketHandler(log);
-        this.fileChequeHandler = new FileChequeHandler(uposDir, log);
+        this.chequeDAO = chequeDAO;
         setView();
     }
 
@@ -136,11 +128,11 @@ public class TestFunctionsModule {
         Button btn = new Button(operation.toString());
         btn.setMinWidth(COMPONENT_WIDTH);
         btn.setOnAction(e -> {
-            fileChequeHandler.deleteFile();
+            chequeDAO.deleteCheque();
             view.setDisable(true);
             loadParmProcess.execute(operation, activationCode.getText());
             sbPilotProcess.execute(operation, activationCode.getText());
-            chequeArea.appendText(fileChequeHandler.getContent());
+            chequeArea.appendText(chequeDAO.readCheque(uposDir)+"\n");
             loadUPOSLog("sbkernel", sbkernellArea);
             loadUPOSLog("upos", sbkernellArea);
             view.setDisable(false);
@@ -186,23 +178,6 @@ public class TestFunctionsModule {
         return b;
     }
 
-    private void loadCheque(TextArea chequeArea) {
-        long startTime = System.currentTimeMillis();
-        long timeWait = startTime + 2000;
-        view.setDisable(true);
-        while (timeWait >= System.currentTimeMillis()) {
-            if (Files.exists(Paths.get(cheque))) {
-                try (FileInputStream fin = new FileInputStream(cheque)) {
-                    byte[] buffer = new byte[fin.available()];
-                    fin.read(buffer, 0, fin.available());
-                    chequeArea.setText(new String(buffer, "cp866"));
-                } catch (Exception ex) {
-                    // loglist.add(getLocatDateTime() + ex.getMessage());
-                }
-            }
-        }
-        view.setDisable(false);
-    }
 
     private void loadUPOSLog(String log, TextArea uposLogArea) {
         uposLog.setFullName(log);
