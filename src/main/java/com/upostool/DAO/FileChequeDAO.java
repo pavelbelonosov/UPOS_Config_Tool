@@ -20,7 +20,6 @@ public class FileChequeDAO implements ChequeDAO {
         appLog = log;
         cheques = new ArrayList<>();
         service = new FileChequeHandler(cheques);
-
     }
 
     @Override
@@ -68,7 +67,8 @@ public class FileChequeDAO implements ChequeDAO {
     }
 
     @Override
-    public void deleteCheque() {
+    public void deleteCheque(String dir) {
+        service.setDir(dir);
         service.deleteFile();
     }
 

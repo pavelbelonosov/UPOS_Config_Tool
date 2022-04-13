@@ -26,25 +26,25 @@ public class ModuleLoadParmProcessTest {
         moduleLoadParmProcess = new ModuleLoadParmProcess(subFolder.getAbsolutePath(), appLog);
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByMenuOperationWithEmptySecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.MENU, "");
         assertTrue(appLog.toString().contains("loadparm.exe 11"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByMenuOperationWithSecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.MENU, "arg");
         assertFalse(appLog.toString().contains("loadparm.exe 11 arg"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByRemoteLoadOperationWithEmptySecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.REMOTE_LOAD, "");
         assertFalse(appLog.toString().contains("loadparm.exe 21"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByRemoteLoadOperationWithSecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.REMOTE_LOAD, "arg");
         assertTrue(appLog.toString().contains("loadparm.exe 21 arg"));
@@ -56,43 +56,43 @@ public class ModuleLoadParmProcessTest {
         assertTrue(appLog.toString().contains("loadparm.exe 22"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByDelKeyOperationWithSecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.DEL_KEY, "arg");
         assertFalse(appLog.toString().contains("loadparm.exe 22 arg"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByXReportOperationWithEmptySecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.XREPORT, "");
         assertTrue(appLog.toString().contains("loadparm.exe 9 1"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByXREportOperationWithSecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.XREPORT, "arg");
         assertFalse(appLog.toString().contains("loadparm.exe 9 arg"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByPurchaseOperationWithEmptySecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.PURCHASE, "");
         assertTrue(appLog.toString().contains("loadparm.exe 1 100"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByPurchaseOperationWithSecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.PURCHASE, "arg");
         assertFalse(appLog.toString().contains("loadparm.exe 1 arg"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByRefundOperationWithEmptySecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.REFUND, "");
         assertTrue(appLog.toString().contains("loadparm.exe 3 100"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByRefundOperationWithSecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.REFUND, "arg");
         assertFalse(appLog.toString().contains("loadparm.exe 3 arg"));
@@ -110,25 +110,25 @@ public class ModuleLoadParmProcessTest {
         assertFalse(appLog.toString().contains("loadparm.exe 7 arg"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByTestPSDBOperationWithEmptySecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.TEST_PSDB, "");
         assertTrue(appLog.toString().contains("loadparm.exe 47 2"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByTestPSDBOperationWithSecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.TEST_PSDB, "arg");
         assertFalse(appLog.toString().contains("loadparm.exe 47 arg"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByHelpInfoOperationWithEmptySecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.HELP_INFO, "");
         assertTrue(appLog.toString().contains("loadparm.exe 36"));
     }
 
-    @Test(timeout = 20000L)
+    @Test(timeout = 30000L)
     public void testExecuteMethodByHelpInfoOperationWithSecondArg() {
         moduleLoadParmProcess.execute(ModuleLoadParmProcess.Operation.HELP_INFO, "arg");
         assertFalse(appLog.toString().contains("loadparm.exe 36 arg"));

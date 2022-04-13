@@ -1,7 +1,6 @@
 package com.upostool.ui.views;
 
 import com.upostool.DAO.ChequeDAO;
-import com.upostool.DAO.FileSettingDAO;
 import com.upostool.DAO.SettingDAO;
 import com.upostool.domain.Setting;
 import com.upostool.domain.FileZip;

@@ -30,8 +30,12 @@ public class Setting {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o){
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
         Setting setting = (Setting) o;
         return Objects.equals(name, setting.name) && Objects.equals(value, setting.value);
     }

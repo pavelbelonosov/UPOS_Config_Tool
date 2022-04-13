@@ -21,8 +21,8 @@ public class LogModule {
     }
 
     private void setView() {
-        //Creating and adding components
-        Label thisAppVersion = new Label("UPOS CONFIG TOOL v.0.2");
+        //Creating/adding components
+        Label thisAppVersion = new Label("UPOS CONFIG TOOL v.0.3");
         Label contact = new Label("CONTACT:  belonosov.kamensk@atm72.ru");
         view.add(thisAppVersion, 0, 0);
         view.add(contact, 0, 1);
@@ -42,8 +42,6 @@ public class LogModule {
         TextArea area = new TextArea();
         area.setWrapText(true);
         area.setMinSize(200, 300);
-        //StringBuilder str = new StringBuilder();
-        //this.log.stream().forEach(line -> str.append(line + "\n"));
         area.setText(this.log.toString());
         area.end();
         return area;

@@ -1,7 +1,6 @@
 package com.upostool.domain;
 
 import java.io.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,24 +16,26 @@ public class FileChequeHandler extends FileHandler {
 
     public String getChequeContent() throws IOException {
         StringBuilder sb = new StringBuilder();
-        readFileCheque().stream().forEach(line -> sb.append(line + "\n"));
+        readFile().stream().forEach(line -> sb.append(line + "\n"));
+        if (sb.length() == 0) {
+            return "";
+        }
         cheque = new Cheque(sb.toString());
         cheques.add(cheque);
         return cheque.getContent();
     }
 
     public void saveToExternal() throws FileNotFoundException {
-        if(cheque.getTerminalID()==0){
-            return;
-        }
-        File file = new File("./" + cheque.getTerminalID() + ".txt");
-        try (PrintWriter pw = new PrintWriter(file)) {
-            this.cheques.stream().forEach(s -> pw.println(s));
+        if (cheque != null) {
+            File file = new File("./" + cheque.getTerminalID() + ".txt");
+            try (PrintWriter pw = new PrintWriter(file)) {
+                this.cheques.stream().forEach(s -> pw.println(s));
+            }
         }
     }
 
-    private List readFileCheque() throws IOException {
-        String content = "";
+    @Override
+    public List readFile() throws IOException {
         long startTime = System.currentTimeMillis();
         long endTime = startTime + 300L;
         while (endTime >= System.currentTimeMillis()) {
@@ -42,11 +43,12 @@ public class FileChequeHandler extends FileHandler {
                 try (FileInputStream fis = new FileInputStream(getDir() + "/" + getFile())) {
                     byte[] buffer = new byte[fis.available()];
                     fis.read(buffer, 0, fis.available());
-                    content = new String(buffer, "cp866");
+                    String content = new String(buffer, "cp866");
+                    return Arrays.asList(content.split("\n"));
                 }
             }
         }
-        return Arrays.asList(content.split("\n"));
+        return new ArrayList();
     }
 
     public List<Cheque> getCheques() {

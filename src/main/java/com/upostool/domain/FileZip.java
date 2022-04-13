@@ -71,7 +71,7 @@ public class FileZip {
             Iterator iterator = zipFile.entries().asIterator();
             while (iterator.hasNext()) {
                 ZipEntry entry = (ZipEntry) iterator.next();
-                java.io.File entryDestination = new java.io.File(destDir, entry.getName());
+                File entryDestination = new File(destDir, entry.getName());
                 if (entry.isDirectory()) {
                     entryDestination.mkdirs();
                 } else {

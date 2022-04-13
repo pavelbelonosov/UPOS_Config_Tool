@@ -5,8 +5,6 @@ import javafx.scene.image.Image;
 
 public class Cons {
     //Styling
-    public static final Image BUTTON_ICON_30x30 = new Image(MainApplication.class
-            .getResourceAsStream("icon_button30x30.png"));
     public static final Image LOGO_TRANSPARENT = new Image(MainApplication.class
             .getResourceAsStream("logo_transparent120x60.png"));
     public static final Image ATM_ICON_MAIN = new Image(MainApplication.class

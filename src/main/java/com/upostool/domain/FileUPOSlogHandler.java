@@ -19,7 +19,7 @@ public class FileUPOSlogHandler extends FileHandler {
         StringBuilder sb = new StringBuilder();
         try {
             readFile().stream().forEach(line -> sb.append(line + "\n"));
-            appLog.addRecord("READING "+this.uposLog.getFullName()+" ...");
+            appLog.addRecord("READING " + this.uposLog.getFullName() + " ...");
             content = sb.toString();
         } catch (IOException e) {
             appLog.addRecord("NOT FOUND " + e.getMessage());

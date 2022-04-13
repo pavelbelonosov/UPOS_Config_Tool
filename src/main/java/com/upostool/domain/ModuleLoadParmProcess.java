@@ -69,6 +69,7 @@ public class ModuleLoadParmProcess extends ModuleProcess {
         CLOSE_DAY("CLOSE DAY"),
         TEST_PSDB("TEST PSDB"),
         HELP_INFO("HELP INFO");
+
         private String explanation;
 
         Operation(String explanation) {

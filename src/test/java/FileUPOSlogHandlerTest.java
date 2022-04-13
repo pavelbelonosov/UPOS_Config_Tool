@@ -14,7 +14,7 @@ public class FileUPOSlogHandlerTest {
     private UPOSlog uposLogMock;
     private AppLog appLogMock;
     private FileUPOSlogHandler fileUPOSlogHandler;
-    private String fakeContent = "someText\nResult= 4119\nsomeText\nResult= 0\nsomeText\nResult= 4353";
+    private String fakeContent = "Hermione Granger\nResult= 4119\nDraco Malfoy\nResult= 0\nLord Voldemort\nResult= 4353";
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();

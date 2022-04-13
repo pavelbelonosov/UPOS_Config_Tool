@@ -4,6 +4,7 @@ import com.upostool.DAO.ChequeDAO;
 import com.upostool.DAO.SettingDAO;
 import com.upostool.util.Cons;
 
+import com.upostool.util.PropertiesHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -14,20 +15,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.Locale;
-
 public class EnteringModule {
 
     private GridPane view;
     private Stage stage; //primaryStage
     private SettingDAO settingDAO;
     private ChequeDAO chequeDAO;
+    private PropertiesHandler propertiesHandler;
 
     public EnteringModule(Stage stage, SettingDAO settingDAO, ChequeDAO chequeDAO) {
         this.view = new GridPane();
         this.stage = stage;
         this.settingDAO = settingDAO;
         this.chequeDAO = chequeDAO;
+        this.propertiesHandler = new PropertiesHandler();
         this.setView();
     }
 
@@ -47,8 +48,8 @@ public class EnteringModule {
         view.setPadding(new Insets(20, 20, 20, 20));
 
         passwordField.textProperty().addListener((change, oldValue, newValue) -> {
-            String input = login.getText().toLowerCase(Locale.ROOT).trim();
-            if (input.matches("atm") & newValue.equals("166831")) {
+            String input = login.getText().toLowerCase().trim();
+            if (input.matches(propertiesHandler.getUser()) && newValue.equals(propertiesHandler.getPassword())) {
                 this.stage.close();
                 openStage("UPOS SETTINGS", new MainSettingsModule(settingDAO, chequeDAO).getView());
 

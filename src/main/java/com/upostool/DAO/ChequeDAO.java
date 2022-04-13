@@ -12,7 +12,7 @@ public interface ChequeDAO {
     Cheque findByType(Cheque.Type t);
     void update(Cheque c);
     void save();
-    void deleteCheque();
+    void deleteCheque(String dir);
     void deleteAll();
     AppLog getLog();
 }

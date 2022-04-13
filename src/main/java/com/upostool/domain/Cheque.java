@@ -3,9 +3,6 @@ package com.upostool.domain;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-//*******************************
-//future entity for JPArepository?
-//*******************************
 public class Cheque {
     private String type;
     private String content;
@@ -32,11 +29,15 @@ public class Cheque {
             type = Type.CLOSE_DAY.toString();
         } else if (content.toLowerCase().contains("контрольная лента")) {
             type = Type.X_REPORT.toString();
+        } else if (content.toLowerCase().contains("процессинг")) {
+            type = Type.UTIL.toString();
+        } else if (content.toLowerCase().contains("загрузка параметров")) {
+            type = Type.UTIL.toString();
         } else if (content.toLowerCase().contains("отмена")) {
             type = Type.CANCEL.toString();
         } else if (content.toLowerCase().contains("возврат")) {
             type = Type.REFUND.toString();
-        } else if (content.toLowerCase().contains(" оплата ")) {
+        } else if (content.toLowerCase().contains("оплата")) {
             type = Type.PURCHASE.toString();
         } else {
             type = Type.UTIL.toString();
@@ -48,13 +49,12 @@ public class Cheque {
             return;
         }
         String[] parts = content.split("\\s+");
-        try{
+        try {
             terminalID = Arrays.stream(parts)
                     .filter(s -> s.matches("[0-9]{8}"))
                     .mapToInt(s -> Integer.valueOf(s)).findAny().getAsInt();
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
         }
-
     }
 
     private void setMerchantID() {
@@ -72,12 +72,12 @@ public class Cheque {
 
 
     private void setRRN() {
-        if (content == null||!type.equals("Purchase")) {
+        if (content == null || !type.equals(Type.PURCHASE.toString())) {
             return;
         }
         String[] parts = content.split("\\s+");
         try {
-            RRN = Arrays.stream(Arrays.copyOfRange(parts, parts.length - 5, parts.length))
+            RRN = Arrays.stream(Arrays.copyOfRange(parts, parts.length - 10, parts.length))
                     .filter(s -> s.matches("[0-9]{12}"))
                     .mapToLong(s -> Long.valueOf(s)).findFirst().getAsLong();
         } catch (NoSuchElementException e) {
@@ -85,7 +85,7 @@ public class Cheque {
     }
 
     private void setAuthCode() {
-        if (content == null||!type.equals("Purchase")) {
+        if (content == null || !type.equals(Type.PURCHASE.toString())) {
             return;
         }
         String[] parts = content.split("\\s+");
@@ -127,11 +127,11 @@ public class Cheque {
 
     @Override
     public String toString() {
-        return "Type: "+ type + " TID " + terminalID + " MID " + merchantID+ " AC " + authCode + " RRN " + RRN+"\n\n"
-                +content;
+        return "Type: " + type + " TID " + terminalID + " MID " + merchantID + " AC " + authCode + " RRN " + RRN + "\n\n"
+                + content;
     }
 
-    public enum Type{
+    public enum Type {
         PURCHASE,
         CANCEL,
         REFUND,

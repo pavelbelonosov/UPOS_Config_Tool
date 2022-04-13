@@ -1,6 +1,5 @@
 package com.upostool;
 
-
 import com.upostool.DAO.ChequeDAO;
 import com.upostool.DAO.FileChequeDAO;
 import com.upostool.DAO.FileSettingDAO;
@@ -10,6 +9,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 
 public class MainApplication extends Application {
 

@@ -128,7 +128,7 @@ public class TestFunctionsModule {
         Button btn = new Button(operation.toString());
         btn.setMinWidth(COMPONENT_WIDTH);
         btn.setOnAction(e -> {
-            chequeDAO.deleteCheque();
+            chequeDAO.deleteCheque(uposDir);
             view.setDisable(true);
             loadParmProcess.execute(operation, activationCode.getText());
             sbPilotProcess.execute(operation, activationCode.getText());
