@@ -59,6 +59,7 @@ public class FileZipTest {
     }
 
     @After
+    @Ignore
     public void tearDown() {
         System.out.println(subFolder.list().length + " files extracted\n");
     }

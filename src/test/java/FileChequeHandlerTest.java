@@ -1,12 +1,9 @@
 import com.upostool.domain.*;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
-import org.mockito.Mockito;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -14,7 +11,6 @@ public class FileChequeHandlerTest {
     private FileChequeHandler fileChequeHandler;
     private File file;
     private String fakeContent;
-    private List<Cheque> chequesMocked;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -22,7 +18,6 @@ public class FileChequeHandlerTest {
     @Before
     public void setUp() throws IOException {
         fakeContent = "Мой график на сегодня -\n6-часовая депрессия с уклоном в самобичевание.\n(Филип К. Дик)";
-        chequesMocked = Mockito.mock(ArrayList.class);
         fileChequeHandler = new FileChequeHandler(new ArrayList());
         fileChequeHandler.setDir(folder.getRoot().getAbsolutePath());
     }

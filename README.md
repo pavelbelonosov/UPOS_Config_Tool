@@ -1,6 +1,6 @@
 # UPOS Config Tool
 
-A powerful util-application for Sberbank engineers with Java 17+, JavaFX 17+ and GraalVM 21.
+Tiny util-application for Sberbank engineers with Java 17+, JavaFX 17+ and GraalVM 21.
 
 ## Description
 

@@ -15,10 +15,6 @@ public class SettingTest {
         s2 = new Setting("ComPort", "1");
     }
 
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void constructorSetNameAndValueRight() {
         assertEquals("ComPort=1", s1.toString());

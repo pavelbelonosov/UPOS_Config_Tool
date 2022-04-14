@@ -4,7 +4,7 @@ import com.upostool.DAO.ChequeDAO;
 import com.upostool.DAO.FileChequeDAO;
 import com.upostool.DAO.FileSettingDAO;
 import com.upostool.DAO.SettingDAO;
-import com.upostool.ui.views.EnteringModule;
+import com.upostool.ui.EnteringModule;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;

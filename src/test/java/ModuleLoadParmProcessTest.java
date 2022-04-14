@@ -135,6 +135,7 @@ public class ModuleLoadParmProcessTest {
     }
 
     @After
+    @Ignore
     public void tearDown() {
         System.out.println(appLog.toString());
     }

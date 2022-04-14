@@ -8,7 +8,7 @@ import java.util.List;
 
 public class AppLog {
 
-    private List<String> logs=new ArrayList<>();
+    private List<String> logs = new ArrayList<>();
 
     public void addRecord(String record) {
         logs.add(getLocatDateTime() + record);
@@ -17,7 +17,7 @@ public class AppLog {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        logs.stream().forEach(l->sb.append(l+"\n"));
+        logs.stream().forEach(l -> sb.append(l + "\n"));
         return sb.toString();
     }
 

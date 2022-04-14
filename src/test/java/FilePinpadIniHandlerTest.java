@@ -50,7 +50,5 @@ public class FilePinpadIniHandlerTest {
     @After
     public void tearDown() throws IOException {
         settings.clear();
-        filePinpadIniHandler.readFile().stream().forEach(System.out::println);
-        System.out.println("");
     }
 }

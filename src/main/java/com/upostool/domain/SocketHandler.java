@@ -16,6 +16,10 @@ public class SocketHandler {
         this.log = log;
     }
 
+    /**
+     * The method checks listen-status of SB sockets
+     * @return String, containing info, whether sockets are available or not.
+     */
     public String checkPortsInfo() {
         log.addRecord("CHECKING PORTS...");
         checkPort650();
@@ -69,11 +73,11 @@ public class SocketHandler {
     }
 
     private boolean isPortAvailable(String host, int port) {
-            try (Socket s = new Socket(host, port)) {
-                return true;
-            } catch (IOException ex) {
-                log.addRecord(ex.getMessage());
-                return false;
-            }
+        try (Socket s = new Socket(host, port)) {
+            return true;
+        } catch (IOException ex) {
+            log.addRecord(ex.getMessage());
+            return false;
         }
     }
+}

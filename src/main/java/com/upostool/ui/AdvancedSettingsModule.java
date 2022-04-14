@@ -1,4 +1,4 @@
-package com.upostool.ui.views;
+package com.upostool.ui;
 
 import com.upostool.DAO.SettingDAO;
 import com.upostool.domain.Setting;

@@ -13,6 +13,12 @@ public class CMDengineerHandler extends CMDcommandHandler {
         this.dir = dir;
     }
 
+    /**
+     * The method defines and executes cmd command (includes commands for SB Agent.exe).
+     * @param command One of presented in CMDengineerHandler.Command enum inner-class
+     * @param arg Arg parameter is used only for PING command
+     *            and should be presented as String-type IP-address. Set "" to ignore this arg.
+     */
     public void executeCMD(Command command, String arg) {
         switch (command) {
             case SERVICES:
@@ -38,15 +44,15 @@ public class CMDengineerHandler extends CMDcommandHandler {
                 getCmdCommand().setArgs(new String[]{"/U", dir + "sbrf.dll", dir + "sbrfcom.dll"});
                 break;
             case REG_AGENT:
-                getCmdCommand().setProcess(dir+"agent.exe");
+                getCmdCommand().setProcess(dir + "agent.exe");
                 getCmdCommand().setArg("/reg");
                 break;
             case UNREG_AGENT:
-                getCmdCommand().setProcess(dir+"agent.exe");
+                getCmdCommand().setProcess(dir + "agent.exe");
                 getCmdCommand().setArg("/unreg");
                 break;
             case RUN_AGENT:
-                getCmdCommand().setProcess(dir+"agent.exe");
+                getCmdCommand().setProcess(dir + "agent.exe");
                 getCmdCommand().setArg("/run");
                 break;
             default:

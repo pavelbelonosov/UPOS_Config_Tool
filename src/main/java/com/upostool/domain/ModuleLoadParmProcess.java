@@ -1,5 +1,8 @@
 package com.upostool.domain;
 
+/**
+ * * The class provides methods for executing loadparm.exe module.
+ */
 public class ModuleLoadParmProcess extends ModuleProcess {
     private AppLog log;
 
@@ -7,12 +10,22 @@ public class ModuleLoadParmProcess extends ModuleProcess {
         this(dir, "loadparm.exe", log);
     }
 
+    /**
+     * @param dir Directory, containing module
+     * @param name Module name (loadparm.exe | sb_pilot.exe)
+     * @param log
+     */
     public ModuleLoadParmProcess(String dir, String name, AppLog log) {
         setDir(dir);
         setModule(name);
         this.log = log;
     }
 
+    /**
+     * The method executes loadparm.exe with arguments, defined by Operation.Name
+     * @param operation One of presented in ModuleLoadParmProcess.Operation inner class.
+     * @param code 8-characters' length argument, only used for remote load operation. Set "" to ignore this arg.
+     */
     public void execute(Operation operation, String code) {
         switch (operation) {
             case MENU:
@@ -21,7 +34,7 @@ public class ModuleLoadParmProcess extends ModuleProcess {
                 break;
             case REMOTE_LOAD:
                 setFirstParam("21");
-                setSecondParam(code);
+                setSecondParam(code.trim());
                 break;
             case DEL_KEY:
                 setFirstParam("22");

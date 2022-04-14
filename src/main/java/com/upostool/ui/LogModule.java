@@ -1,4 +1,4 @@
-package com.upostool.ui.views;
+package com.upostool.ui;
 
 import com.upostool.domain.AppLog;
 import com.upostool.util.Cons;

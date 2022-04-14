@@ -43,6 +43,7 @@ public class FileUPOSlogHandlerTest {
     }
 
     @After
+    @Ignore
     public void tearDown() {
         System.out.println(fileUPOSlogHandler.getContent());
         System.out.println(fileUPOSlogHandler.findErrors());

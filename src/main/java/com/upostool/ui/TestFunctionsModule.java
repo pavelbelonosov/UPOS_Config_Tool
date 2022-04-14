@@ -1,4 +1,4 @@
-package com.upostool.ui.views;
+package com.upostool.ui;
 
 import com.upostool.DAO.ChequeDAO;
 import com.upostool.DAO.FileChequeDAO;

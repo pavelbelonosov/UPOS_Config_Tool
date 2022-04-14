@@ -17,14 +17,25 @@ public class CMDcommand {
         }
     }
 
+    /**
+     * The method sets one argument to cmd process.
+     */
     public void setArg(String arg) {
         this.args = new String[]{arg};
     }
 
+    /**
+     * The method sets several arguments to cmd process.
+     */
     public void setArgs(String[] args) {
         this.args = args;
     }
 
+    /**
+     * The method returns cmd command as list of elements.
+     * This type form is required for constructor parameter of ProcessBuilder.class.
+     * If process variable of CMDcommand is null, method returns "base" cmd command("cmd.exe /c").
+     */
     public List<String> getCmd() {
         List<String> base = new ArrayList<>();
         base.add("cmd.exe");
