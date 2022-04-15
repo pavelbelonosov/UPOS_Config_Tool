@@ -13,7 +13,11 @@ public class Cheque {
     //private double amount;
 
     public Cheque(String content) {
-        this.content = content;
+        if (content == null) {
+            this.content = "";
+        } else {
+            this.content = content;
+        }
         setType();
         setTerminalID();
         setMerchantID();
@@ -22,9 +26,6 @@ public class Cheque {
     }
 
     private void setType() {
-        if (content == null) {
-            return;
-        }
         if (content.toLowerCase().contains("сверка итогов")) {
             type = Type.CLOSE_DAY.toString();
         } else if (content.toLowerCase().contains("контрольная лента")) {
@@ -45,9 +46,6 @@ public class Cheque {
     }
 
     private void setTerminalID() {
-        if (content == null) {
-            return;
-        }
         String[] parts = content.split("\\s+");
         try {
             terminalID = Arrays.stream(parts)
@@ -58,9 +56,6 @@ public class Cheque {
     }
 
     private void setMerchantID() {
-        if (content == null) {
-            return;
-        }
         String[] parts = content.split("\\s+");
         try {
             merchantID = Arrays.stream(parts)
@@ -72,7 +67,7 @@ public class Cheque {
 
 
     private void setRRN() {
-        if (content == null || !type.equals(Type.PURCHASE.toString())) {
+        if (!type.equals(Type.PURCHASE.toString())) {
             return;
         }
         String[] parts = content.split("\\s+");
@@ -85,7 +80,7 @@ public class Cheque {
     }
 
     private void setAuthCode() {
-        if (content == null || !type.equals(Type.PURCHASE.toString())) {
+        if (!type.equals(Type.PURCHASE.toString())) {
             return;
         }
         String[] parts = content.split("\\s+");
@@ -121,9 +116,6 @@ public class Cheque {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
 
     @Override
     public String toString() {

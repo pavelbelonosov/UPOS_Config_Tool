@@ -8,6 +8,6 @@
     <suppress files="com.upostool.ui.AdvancedSettingsModule.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="com.upostool.ui.EnteringModule.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="com.upostool.ui.LogModule.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="com/upostool/ui.MainSettingsModule.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="com/upostool/ui.TestFunctionsModule.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="com.upostool.ui.MainSettingsModule.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="com.upostool.ui.TestFunctionsModule.java" checks="[a-zA-Z0-9]*"/>
 </suppressions>

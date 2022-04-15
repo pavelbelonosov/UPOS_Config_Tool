@@ -55,7 +55,7 @@ public class CMDcommand {
 
     @Override
     public String toString() {
-        if (cmd.size() < 2) {
+        if (cmd == null || cmd.size() < 2) {
             return "";
         }
         StringBuilder sb = new StringBuilder();

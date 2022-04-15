@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FileSettingDAO implements SettingDAO {
+/**
+ * The class for instantiating Data Access Objects for handling Pinpad.ini, UPOS-configuration text-file.
+ */
+public class  FileSettingDAO implements SettingDAO {
 
     private List<Setting> settings;
     private FilePinpadIniHandler service;
@@ -22,6 +25,11 @@ public class FileSettingDAO implements SettingDAO {
         log = new AppLog();
     }
 
+    /**
+     * The method for reading UPOS-configuration from file.
+     * @param dir String-type directory to UPOS repository.
+     * @return list of Setting-objects.
+     */
     @Override
     public List<Setting> findAll(String dir) {
         try {
@@ -38,18 +46,27 @@ public class FileSettingDAO implements SettingDAO {
         return this.settings;
     }
 
+    /**
+     * The method for searching setting in loaded or created configuration.
+     * @param  name Name of the setting.
+     * @return Setting-object, if it presents in configuration, otherwise returns null.
+     */
     @Override
     public Setting findByName(String name) {
-        List<Setting> list = settings.stream()
-                .filter(s -> s.getName()
-                        .equals(name))
-                .collect(Collectors.toList());
-        if (!list.isEmpty()) {
-            return list.get(0);
-        }
+            List<Setting> list = settings.stream()
+                    .filter(s -> s.getName()
+                            .equals(name))
+                    .collect(Collectors.toList());
+            if (!list.isEmpty()) {
+                return list.get(0);
+            }
         return null;
     }
 
+    /**
+     * The method for writing list of Setting-objects into configuration file.
+     * @param dir String-type directory to UPOS repository.
+     */
     @Override
     public void save(String dir) {
         try {
@@ -63,6 +80,11 @@ public class FileSettingDAO implements SettingDAO {
         }
     }
 
+    /**
+     * The method for adding new Setting-object into settings-configuration.
+     * If this Setting already exists, its value replaced by new one's.
+     * @param s Setting-object to be added into configuration.
+     */
     @Override
     public void update(Setting s) {
         Setting existed = findByName(s.getName());
@@ -81,6 +103,10 @@ public class FileSettingDAO implements SettingDAO {
 
     }
 
+    /**
+     * The method for deleting Setting from configuration.
+     * @param name Name variable of the Setting-object.
+     */
     @Override
     public void removeByName(String name) {
         if (findByName(name) != null) {
@@ -94,6 +120,9 @@ public class FileSettingDAO implements SettingDAO {
         return settings.isEmpty();
     }
 
+    /**
+     * The method for clearing loaded or created configuration.
+     */
     @Override
     public void deleteAll() {
         settings.clear();
