@@ -1,7 +1,7 @@
 package com.upostool.ui;
 
-import com.upostool.DAO.ChequeDAO;
-import com.upostool.DAO.SettingDAO;
+import com.upostool.dao.ChequeDAO;
+import com.upostool.dao.SettingDAO;
 import com.upostool.domain.Setting;
 import com.upostool.domain.FileZip;
 import com.upostool.util.*;

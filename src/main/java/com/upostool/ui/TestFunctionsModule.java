@@ -1,7 +1,6 @@
 package com.upostool.ui;
 
-import com.upostool.DAO.ChequeDAO;
-import com.upostool.DAO.FileChequeDAO;
+import com.upostool.dao.ChequeDAO;
 import com.upostool.domain.*;
 import com.upostool.util.Cons;
 import javafx.geometry.Insets;

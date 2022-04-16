@@ -1,6 +1,6 @@
 package com.upostool.ui;
 
-import com.upostool.DAO.SettingDAO;
+import com.upostool.dao.SettingDAO;
 import com.upostool.domain.Setting;
 import com.upostool.util.Cons;
 import com.upostool.util.SETTINGS_VALUES_EXPLANATIONS;

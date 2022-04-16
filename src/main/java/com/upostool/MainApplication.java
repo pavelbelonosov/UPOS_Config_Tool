@@ -1,9 +1,9 @@
 package com.upostool;
 
-import com.upostool.DAO.ChequeDAO;
-import com.upostool.DAO.FileChequeDAO;
-import com.upostool.DAO.FileSettingDAO;
-import com.upostool.DAO.SettingDAO;
+import com.upostool.dao.ChequeDAO;
+import com.upostool.dao.FileChequeDAO;
+import com.upostool.dao.FileSettingDAO;
+import com.upostool.dao.SettingDAO;
 import com.upostool.ui.EnteringModule;
 import javafx.application.Application;
 import javafx.scene.Scene;

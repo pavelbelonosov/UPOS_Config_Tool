@@ -1,4 +1,4 @@
-package com.upostool.DAO;
+package com.upostool.dao;
 
 import com.upostool.domain.AppLog;
 import com.upostool.domain.Cheque;
