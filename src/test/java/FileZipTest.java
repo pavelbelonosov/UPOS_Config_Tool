@@ -58,8 +58,8 @@ public class FileZipTest {
         assertTrue(subFolder.list().length > 0);
     }
 
-    @After
     @Ignore
+    @After
     public void tearDown() {
         System.out.println(subFolder.list().length + " files extracted\n");
     }

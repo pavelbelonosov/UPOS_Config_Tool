@@ -51,9 +51,4 @@ public class FileChequeHandlerTest {
         assertEquals(1, fileChequeHandler.getCheques().size());
     }
 
-    @After
-    @Ignore
-    public void tearDown(){
-        System.out.println(fileChequeHandler.getCheques().size());
-    }
 }

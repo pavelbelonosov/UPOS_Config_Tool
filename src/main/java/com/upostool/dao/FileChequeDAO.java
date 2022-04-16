@@ -1,4 +1,4 @@
-package com.upostool.DAO;
+package com.upostool.dao;
 
 import com.upostool.domain.AppLog;
 import com.upostool.domain.Cheque;
@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * The class for instantiating Data Access Objects for handling UPOS cheque file.
+ */
 public class FileChequeDAO implements ChequeDAO {
 
     private List<Cheque> cheques;
@@ -22,6 +24,12 @@ public class FileChequeDAO implements ChequeDAO {
         service = new FileChequeHandler(cheques);
     }
 
+    /**
+     * The method returns decoded from cp866 to UTF-8 content of check file.
+     * By default, in UPOS it is file "p".
+     * @param dir String-type directory of UPOS repository.
+     * @return cheque content, if cheque exists.
+     */
     @Override
     public String readCheque(String dir) {
         service.setDir(dir);
@@ -40,6 +48,11 @@ public class FileChequeDAO implements ChequeDAO {
         return null;
     }
 
+    /**
+     * The method for finding Cheque-object by its type. Util type used for all non-transactional cheques.
+     * @param type One of presented in enum inner class of Cheque class.
+     * @return Cheque-object, if exists.
+     */
     @Override
     public Cheque findByType(Cheque.Type type) {
         List<Cheque> list = cheques.stream()
@@ -52,10 +65,12 @@ public class FileChequeDAO implements ChequeDAO {
     }
 
     @Override
-    public void update(Cheque c) {
+    public void update(Cheque c) {}
 
-    }
-
+    /**
+     * The method for saving Cheque().toString of all Cheques into file,
+     * created in same directory with application.
+     */
     @Override
     public void save() {
         appLog.addRecord("SAVING CHEQUE...");
@@ -66,6 +81,10 @@ public class FileChequeDAO implements ChequeDAO {
         }
     }
 
+    /**
+     * The method for deleting UPOS cheque-file.
+     * @param dir String-type directory of UPOS application.
+     */
     @Override
     public void deleteCheque(String dir) {
         service.setDir(dir);

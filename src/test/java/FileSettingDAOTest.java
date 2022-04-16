@@ -1,13 +1,11 @@
-import com.upostool.DAO.FileSettingDAO;
+import com.upostool.dao.FileSettingDAO;
 import com.upostool.domain.*;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
-import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

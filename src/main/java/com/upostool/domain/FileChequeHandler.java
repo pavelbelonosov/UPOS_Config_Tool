@@ -5,15 +5,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Service class for FileChequeDAO. Provides methods for reading text file and decoding.
+ */
 public class FileChequeHandler extends FileHandler {
     private Cheque cheque;
     private List<Cheque> cheques;
 
+    /**
+     * Constructor sets cheque file name to "p" by default.
+     * @param cheques
+     */
     public FileChequeHandler(List cheques) {
         setFile("p");
         this.cheques = cheques;
     }
 
+    /**
+     * The method returns UPOS cheque content, initializes Cheque-object and adds it into collection.
+     * @return String-type cheque content.
+     * @throws IOException when cheque file not found.
+     */
     public String getChequeContent() throws IOException {
         StringBuilder sb = new StringBuilder();
         readFile().stream().forEach(line -> sb.append(line + "\n"));
@@ -25,6 +37,10 @@ public class FileChequeHandler extends FileHandler {
         return cheque.getContent();
     }
 
+    /**
+     * The method for saving cheque collection into file, located within application directory.
+     * @throws FileNotFoundException
+     */
     public void saveToExternal() throws FileNotFoundException {
         if (cheque != null) {
             File file = new File("./" + cheque.getTerminalID() + ".txt");
@@ -34,6 +50,11 @@ public class FileChequeHandler extends FileHandler {
         }
     }
 
+    /**
+     * The method for reading and decoding cheque text file.
+     * @return List of lines.
+     * @throws IOException
+     */
     @Override
     public List readFile() throws IOException {
         long startTime = System.currentTimeMillis();

@@ -30,6 +30,16 @@ Run the native image app:
 ```bash
 mvn gluonfx:nativerun
 ```
+## Testing and checkstyle
+
+Run unit tests and see results in /target/site/jacococ/index.html
+```bash
+mvn test jacoco:report
+```
+Run checkstyle test and see results in /target/site/checkstyle.html
+```bash
+mvn jxr:jxr checkstyle:checkstyle
+```
 ## Most recent version
 
 UPOS Config Tool v.0.2

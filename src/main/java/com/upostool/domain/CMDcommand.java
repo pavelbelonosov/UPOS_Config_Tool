@@ -33,8 +33,8 @@ public class CMDcommand {
 
     /**
      * The method returns cmd command as list of elements.
-     * This type form is required for constructor parameter of ProcessBuilder.class.
-     * If process variable of CMDcommand is null, method returns "base" cmd command("cmd.exe /c").
+     * This type form is required as constructor param of ProcessBuilder.
+     * If process variable of CMDcommand is null, method returns "base" cmd("cmd.exe /c").
      */
     public List<String> getCmd() {
         List<String> base = new ArrayList<>();

@@ -13,7 +13,7 @@ public class ModuleLoadParmProcess extends ModuleProcess {
     /**
      * @param dir Directory, containing module
      * @param name Module name (loadparm.exe | sb_pilot.exe)
-     * @param log
+     * @param log AppLog-object for maintaining application log
      */
     public ModuleLoadParmProcess(String dir, String name, AppLog log) {
         setDir(dir);
