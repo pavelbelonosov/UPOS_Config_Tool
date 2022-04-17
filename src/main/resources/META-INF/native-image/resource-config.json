@@ -45,6 +45,9 @@
     }, 
     {
       "pattern":"\\Qcom/upostool/logo_transparent120x60.png\\E"
+    }, 
+    {
+      "pattern":"\\Qcom/upostool/user.properties\\E"
     }
   ]},
   "bundles":[
