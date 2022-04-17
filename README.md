@@ -8,7 +8,7 @@ The main purpose is to facilitate the work of Sberbank technical specialists wor
 
 ## Documentation
 
-A proper user's instruction you can find [here](web/guidePDF/Инструкция UPOS Config-Tool.pdf).
+A proper user's instruction you can find [here](https://github.com/pavelbelonosov/UPOS_Config_Tool/blob/249c2cc5892aadd2631383029218d79e00fe270c/web/guidePDF/%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D1%8F%20UPOS%20Config-Tool.pdf).
 
 ## Quick guide to Gluon
 
