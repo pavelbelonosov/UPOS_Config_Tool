@@ -8,7 +8,7 @@ The main purpose is to facilitate the work of Sberbank technical specialists wor
 
 ## Documentation
 
-A proper user's instruction you can find [here]().
+A proper user's instruction you can find [here](web/guidePDF/Инструкция UPOS Config-Tool.pdf).
 
 ## Quick guide to Gluon
 
@@ -42,4 +42,4 @@ mvn jxr:jxr checkstyle:checkstyle
 ```
 ## Most recent version
 
-UPOS Config Tool v.0.2
+UPOS Config Tool v.0.3
