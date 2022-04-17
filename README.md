@@ -32,7 +32,7 @@ mvn gluonfx:nativerun
 ```
 ## Testing and checkstyle
 
-Run unit tests and see results in /target/site/jacococ/index.html
+Run unit tests and see results in /target/site/jacoco/index.html
 ```bash
 mvn test jacoco:report
 ```
