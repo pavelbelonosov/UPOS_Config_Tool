@@ -25,7 +25,7 @@ public class FileChequeDAO implements ChequeDAO {
     }
 
     /**
-     * The method returns decoded from cp866 to UTF-8 content of check file.
+     * The method returns decoded from cp866 to UTF-8 content of cheque file.
      * By default, in UPOS it is file "p".
      * @param dir String-type directory of UPOS repository.
      * @return cheque content, if cheque exists.
