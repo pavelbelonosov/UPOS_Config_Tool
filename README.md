@@ -2,8 +2,6 @@
 
 Tiny util-application for Sberbank engineers with Java 17+, JavaFX 17+ and GraalVM 21.
 
-<video src='https://youtu.be/pmKebW8tYA8' width=180/>
-
 ## Description
 
 The main purpose is to facilitate the work of Sberbank technical specialists working with the UPOS (universal software for POS terminals), which is installed in all models of Sberbank POS-terminals. The application allows to fine-tune the terminal configuration and perform all the necessary test and auxiliary operations.
