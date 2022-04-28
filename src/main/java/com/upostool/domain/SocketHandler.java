@@ -10,8 +10,8 @@ public class SocketHandler {
     private StringBuilder checkPortsInfo;
 
     public SocketHandler(AppLog log) {
-        mainHost = "194.54.14.89";
-        agentHost = "185.157.96.41";
+        mainHost = "1.1.1.1";
+        agentHost = "2.2.2.2";
         checkPortsInfo = new StringBuilder();
         this.log = log;
     }
